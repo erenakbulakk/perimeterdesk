@@ -1,6 +1,6 @@
 import { getStore } from '@netlify/blobs';
 
-export const handler = async (event) => {
+export default async (req) => {
   const headers = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -8,26 +8,38 @@ export const handler = async (event) => {
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
   };
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers, body: '' };
+  if (req.method === 'OPTIONS') {
+    return new Response('', { status: 204, headers });
   }
 
   try {
     const store = getStore('perimeter-desk-cloud');
 
-    if (event.httpMethod === 'GET') {
+    if (req.method === 'GET') {
       const data = await store.get('live_state_v1', { type: 'json' });
-      return { statusCode: 200, headers, body: JSON.stringify({ ok: true, data: data || null }) };
+      return new Response(JSON.stringify({ ok: true, data: data || null }), {
+        status: 200,
+        headers
+      });
     }
 
-    if (event.httpMethod === 'POST') {
-      const payload = JSON.parse(event.body || '{}');
+    if (req.method === 'POST') {
+      const payload = await req.json();
       await store.setJSON('live_state_v1', payload);
-      return { statusCode: 200, headers, body: JSON.stringify({ ok: true }) };
+      return new Response(JSON.stringify({ ok: true }), {
+        status: 200,
+        headers
+      });
     }
 
-    return { statusCode: 405, headers, body: JSON.stringify({ ok: false, error: 'Method Not Allowed' }) };
+    return new Response(JSON.stringify({ ok: false, error: 'Method Not Allowed' }), {
+      status: 405,
+      headers
+    });
   } catch (err) {
-    return { statusCode: 500, headers, body: JSON.stringify({ ok: false, error: err.message }) };
+    return new Response(JSON.stringify({ ok: false, error: err.message }), {
+      status: 500,
+      headers
+    });
   }
 };
