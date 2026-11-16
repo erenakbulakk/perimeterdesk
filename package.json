@@ -1,0 +1,41 @@
+{
+  "name": "perimeter-desk",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.perimeterdesk.led7253",
+    "productName": "Perimeter Desk",
+    "files": [
+      "main.js",
+      "preload.cjs",
+      "index.html",
+      "icon.ico"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico"
+    }
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.9"
+  }
+}

@@ -1,0 +1,2875 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Perimeter Desk</title>
+
+  <!-- iOS Safari & Android PWA Tam Ekran Etiketleri -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Perimeter Desk" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #020617;
+      color: #f8fafc;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none;
+    }
+    a[href*="netlify.com"],
+    a[href*="netlify.app"],
+    [id*="netlify"],
+    [class*="netlify"],
+    iframe[src*="netlify"] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      height: 0 !important;
+      width: 0 !important;
+      overflow: hidden !important;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Takvim inputunun tamamının tıklanabilir olmasını sağlar */
+    input[type="date"].calendar-overlay-input::-webkit-calendar-picker-indicator {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    @keyframes pulseFast {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+    @keyframes pulseSlow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.15; }
+    }
+    .led-fast { animation: pulseFast 0.5s infinite; }
+    .led-slow { animation: pulseSlow 2s infinite; }
+    .led-very-slow { animation: pulseSlow 4s infinite; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 select-none">
+
+  <!-- ÜST BAŞLIK & NAVİGASYON BARI -->
+  <header class="sticky top-0 z-30 bg-slate-900/95 backdrop-blur border-b border-slate-800">
+    <div class="px-3 py-2.5 flex items-center justify-between gap-2 max-w-4xl mx-auto">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center p-1 shadow-lg shrink-0 border border-amber-400/40" title="Perimeter Desk • #7253 Saha Kenarı LED Panel Projesi">
+          <svg viewBox="0 0 64 64" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 14 H52 V50 H12 Z" stroke="#0f172a" stroke-width="2" stroke-linejoin="round" opacity="0.35"/>
+            <path d="M18 7 H48 C52 7 55 10 55 14 V44" stroke="#0f172a" stroke-width="2.2" stroke-linecap="round"/>
+            <circle cx="18" cy="7" r="2.2" fill="#0f172a"/>
+            <circle cx="55" cy="44" r="2.2" fill="#0f172a"/>
+            <path d="M46 57 H16 C12 57 9 54 9 50 V20" stroke="#0f172a" stroke-width="2.2" stroke-linecap="round"/>
+            <circle cx="46" cy="57" r="2.2" fill="#0f172a"/>
+            <circle cx="9" cy="20" r="2.2" fill="#0f172a"/>
+
+            <rect x="15" y="10.5" width="10" height="3.5" rx="1" fill="#0f172a"/>
+            <rect x="27" y="10.5" width="10" height="3.5" rx="1" fill="#0f172a"/>
+            <rect x="39" y="10.5" width="10" height="3.5" rx="1" fill="#0f172a"/>
+
+            <rect x="15" y="50" width="10" height="3.5" rx="1" fill="#0f172a"/>
+            <rect x="27" y="50" width="10" height="3.5" rx="1" fill="#0f172a"/>
+            <rect x="39" y="50" width="10" height="3.5" rx="1" fill="#0f172a"/>
+
+            <rect x="10.5" y="17" width="3.5" height="13" rx="1" fill="#0f172a"/>
+            <rect x="10.5" y="34" width="3.5" height="13" rx="1" fill="#0f172a"/>
+
+            <rect x="50" y="17" width="3.5" height="13" rx="1" fill="#0f172a"/>
+            <rect x="50" y="34" width="3.5" height="13" rx="1" fill="#0f172a"/>
+
+            <rect x="17.5" y="17.5" width="29" height="29" rx="2" stroke="#0f172a" stroke-width="2.2"/>
+            <path d="M22 17.5 A10 10 0 0 0 42 17.5" stroke="#0f172a" stroke-width="2"/>
+            <rect x="27.5" y="17.5" width="9" height="7" stroke="#0f172a" stroke-width="1.8"/>
+            <path d="M22 46.5 A10 10 0 0 1 42 46.5" stroke="#0f172a" stroke-width="2"/>
+            <rect x="27.5" y="39.5" width="9" height="7" stroke="#0f172a" stroke-width="1.8"/>
+            <line x1="17.5" y1="32" x2="46.5" y2="32" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="2 2"/>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-sm font-bold text-white truncate">Perimeter Desk</h1>
+          <p class="text-[11px] text-slate-400 truncate">#7253 • 25 Panel • TB60 &amp; VNNOX</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5 shrink-0">
+        <span id="cloud-sync-badge" class="px-2 py-1 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 text-[10px] font-bold flex items-center gap-1.5" title="Ortak Bulut Senkronizasyonu">
+          <span id="cloud-sync-dot" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="cloud-sync-text">Bulut Bağlanıyor</span>
+        </span>
+        <button onclick="openPwaModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-medium active:scale-95 transition">
+          Kurulum
+        </button>
+      </div>
+    </div>
+
+    <!-- ÜST SEKME MENÜSÜ -->
+    <nav class="border-t border-slate-800/80 px-2 py-1.5 bg-slate-950/60">
+      <div class="max-w-4xl mx-auto grid grid-cols-7 gap-1">
+        <button onclick="switchTab('plan')" id="nav-plan" class="nav-btn flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-1 rounded-xl bg-amber-500/15 text-amber-400 font-bold text-[9.5px] sm:text-xs">
+          <span class="text-sm sm:text-base leading-none">🏟️</span>
+          <span class="truncate">Saha Planı</span>
+        </button>
+        <button onclick="switchTab('troubleshoot')" id="nav-troubleshoot" class="nav-btn flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-200 font-medium text-[9.5px] sm:text-xs">
+          <span class="text-sm sm:text-base leading-none">🛠️</span>
+          <span class="truncate">Arıza Teşhis</span>
+        </button>
+        <button onclick="switchTab('tb60')" id="nav-tb60" class="nav-btn flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-200 font-medium text-[9.5px] sm:text-xs">
+          <span class="text-sm sm:text-base leading-none">📟</span>
+          <span class="truncate">TB60 LED</span>
+        </button>
+        <button onclick="switchTab('fixtures')" id="nav-fixtures" class="nav-btn flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-200 font-medium text-[9.5px] sm:text-xs">
+          <span class="text-sm sm:text-base leading-none">📅</span>
+          <span class="truncate">Fikstür</span>
+        </button>
+        <button onclick="switchTab('standings')" id="nav-standings" class="nav-btn flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-200 font-medium text-[9.5px] sm:text-xs">
+          <span class="text-sm sm:text-base leading-none">🏆</span>
+          <span class="truncate">Puan Durumu</span>
+        </button>
+        <button onclick="switchTab('arenas')" id="nav-arenas" class="nav-btn flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-200 font-medium text-[9.5px] sm:text-xs">
+          <span class="text-sm sm:text-base leading-none">🏢</span>
+          <span class="truncate">9 Saha</span>
+        </button>
+        <button onclick="switchTab('schedule')" id="nav-schedule" class="nav-btn flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-200 font-medium text-[9.5px] sm:text-xs">
+          <span class="text-sm sm:text-base leading-none">🗓️</span>
+          <span class="truncate">Programım</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ANA İÇERİK ALANI -->
+  <main class="flex-1 overflow-y-auto pb-8 px-2.5 sm:px-3 pt-3 max-w-4xl w-full mx-auto space-y-4">
+
+    <!-- 1. SAHA PLANI SEKMESİ -->
+    <section id="tab-plan" class="space-y-3">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 shadow-lg">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <h2 class="text-sm font-bold text-white">5 Bölge / 25 Panel Saha Kenarı Dizilimi</h2>
+            <p class="text-[11px] text-slate-400">Tekil panel numarasına veya 90° köşeye dokunun</p>
+          </div>
+          <button id="btn-toggle-lines" onclick="toggleWiringLines()" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-[11px] font-semibold text-amber-300">
+            Hatlar
+          </button>
+        </div>
+
+        <div id="court-diagram" class="bg-slate-950 border border-slate-800 rounded-2xl p-2 sm:p-3 overflow-x-auto"></div>
+
+        <div id="zone-quick-buttons" class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 mt-2.5">
+          <button onclick="selectZone('z1')" data-zone-btn="z1" class="zone-btn px-2 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[11px] font-bold transition active:scale-95">
+            1. Sol Pota (4)
+          </button>
+          <button onclick="selectZone('z2')" data-zone-btn="z2" class="zone-btn px-2 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/40 text-sky-300 text-[11px] font-bold transition active:scale-95">
+            2. Sol Yan (5)
+          </button>
+          <button onclick="selectZone('z3')" data-zone-btn="z3" class="zone-btn px-2 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold transition active:scale-95">
+            3. Merkez (7)
+          </button>
+          <button onclick="selectZone('z4')" data-zone-btn="z4" class="zone-btn px-2 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[11px] font-bold transition active:scale-95">
+            4. Sağ Yan (5)
+          </button>
+          <button onclick="selectZone('z5')" data-zone-btn="z5" class="zone-btn col-span-2 sm:col-span-1 px-2 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[11px] font-bold transition active:scale-95">
+            5. Sağ Pota (4)
+          </button>
+        </div>
+      </div>
+
+      <div id="panel-detail-card" class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 shadow-lg space-y-2.5">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <span id="detail-badge" class="inline-block px-2 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold mb-1 uppercase">
+              3. MERKEZ ORTA SAHA • 1. PANEL (GENEL #10/25)
+            </span>
+            <h3 id="detail-title" class="text-sm font-bold text-white">3. Merkez Orta Saha — 1. Panel (Kabin) Teşhisi</h3>
+          </div>
+          <button id="btn-view-whole-zone" onclick="viewWholeActiveZone()" class="shrink-0 text-xs font-bold text-amber-400 hover:text-amber-300 underline underline-offset-4 transition">
+            Tüm Bölgeyi Gör (7 Panel)
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-2">
+            <div class="text-[10px] text-slate-400">Veri Hattı</div>
+            <div id="detail-data" class="font-bold text-rose-400 mt-0.5">Master: Data 2 | Backup: Data 4</div>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-2">
+            <div class="text-[10px] text-slate-400">Güç Hattı</div>
+            <div id="detail-power" class="font-bold text-sky-400 mt-0.5">Power 3 (Merkez 1-2-3 Nolu Paneller)</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2.5">
+          <div class="text-[11px] font-semibold text-slate-300 mb-1">Saha Müdahale &amp; İzolasyon Adımları:</div>
+          <ul id="detail-steps" class="text-xs text-slate-300 space-y-1 list-disc pl-4"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ARIZA TEŞHİS SEKMESİ -->
+    <section id="tab-troubleshoot" class="hidden space-y-3">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3">
+        <h2 class="text-sm font-bold text-white">Adım Adım Arıza Kontrol Listeleri</h2>
+        <p class="text-[11px] text-slate-400">Sahada karşılaştığınız senaryoyu seçip adımları işaretleyin</p>
+      </div>
+      <div id="scenarios-container" class="space-y-3"></div>
+    </section>
+
+    <!-- 3. TB60 LED REHBERİ SEKMESİ -->
+    <section id="tab-tb60" class="hidden space-y-3">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 space-y-3">
+        <div>
+          <h2 class="text-sm font-bold text-white">NovaStar TB60 Ön Panel LED Simülatörü</h2>
+          <p class="text-[11px] text-slate-400">Cihaz üzerindeki gösterge ışığına dokunarak anlamını görün</p>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 grid grid-cols-5 gap-2 text-center">
+          <button onclick="selectLed('PWR')" class="p-2 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center gap-1.5 active:scale-95">
+            <span class="w-3.5 h-3.5 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]"></span>
+            <span class="text-[11px] font-bold text-white">PWR</span>
+            <span class="text-[9px] text-slate-400">Sabit Kırmızı</span>
+          </button>
+          <button onclick="selectLed('SYS')" class="p-2 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center gap-1.5 active:scale-95">
+            <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 led-slow shadow-[0_0_10px_#34d399]"></span>
+            <span class="text-[11px] font-bold text-white">SYS</span>
+            <span class="text-[9px] text-slate-400">2sn Yanıp Sön.</span>
+          </button>
+          <button onclick="selectLed('CLOUD')" class="p-2 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center gap-1.5 active:scale-95">
+            <span class="w-3.5 h-3.5 rounded-full bg-sky-400 shadow-[0_0_10px_#38bdf8]"></span>
+            <span class="text-[11px] font-bold text-white">CLOUD</span>
+            <span class="text-[9px] text-slate-400">VNNOX Bağlı</span>
+          </button>
+          <button onclick="selectLed('RUN')" class="p-2 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center gap-1.5 active:scale-95">
+            <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 led-fast shadow-[0_0_10px_#34d399]"></span>
+            <span class="text-[11px] font-bold text-white">RUN</span>
+            <span class="text-[9px] text-slate-400">0.5sn Aktif</span>
+          </button>
+          <button onclick="selectLed('SWITCH')" class="p-2 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center gap-1.5 active:scale-95">
+            <span class="w-3.5 h-3.5 rounded-full bg-amber-400 shadow-[0_0_10px_#fbbf24]"></span>
+            <span class="text-[11px] font-bold text-white">SWITCH</span>
+            <span class="text-[9px] text-slate-400">Senk / Asenk</span>
+          </button>
+        </div>
+
+        <div id="led-detail-box" class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs space-y-1.5">
+          <div class="font-bold text-emerald-400">RUN (FPGA Görüntü Çıkış Göstergesi)</div>
+          <p class="text-slate-300">• <b>0.5 sn aralıkla yanıp sönüyor:</b> FPGA normal çalışıyor, Ethernet portlarından veri çıkışı var.</p>
+          <p class="text-slate-300">• <b>4 sn aralıkla yanıp sönüyor:</b> Video kaynağı yok! SWITCH tuşuna basıp Senkron/Asenkron modunu kontrol edin veya ViPlex'ten yayın başlatın.</p>
+          <p class="text-slate-300">• <b>Sabit yanıyor veya sönük:</b> FPGA donanım/yazılım hatası; cihazı arka anahtardan yeniden başlatın.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 space-y-2 text-xs">
+        <h3 class="font-bold text-amber-400">TB60 &amp; ViPlex Express Kritik Saha Kuralları</h3>
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 space-y-1.5 text-slate-300">
+          <p>• <b>Wi-Fi AP Bağlantısı:</b> Ağ adı <span class="text-white font-semibold">AP + Seri No Son 8 Hanesi</span> | Varsayılan Giriş: <span class="text-white font-semibold">admin / 123456</span></p>
+          <p>• <b>Port 16600 Hatası:</b> ViPlex Express açılmıyorsa Görev Yöneticisi'nden 16600 portunu kullanan arka plan uygulamasını kapatın.</p>
+          <p>• <b>Ultra-Long Ekran Limitleri:</b> Maksimum 2.300.000 piksel (Max genişlik 23.040 px / Yükseklik 4.096 px). 16.384 px üzeri genişlikte önizleme açılamaz ve USB oynatma desteklenmez.</p>
+          <p>• <b>Çoklu Ekran Senkronizasyonu:</b> NTP/RF/GPS saat eşitlemesi açık olmalı, <i>Synchronous Playing</i> aktif edilmeli ve <i>Random Transition</i> kapalı tutulmalıdır.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. FİKSTÜR SEKMESİ -->
+    <section id="tab-fixtures" class="hidden space-y-3">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <h2 id="fixtures-league-heading" class="text-sm font-bold text-white truncate">TBF BSL 2026-2027 Fikstür &amp; Maç Sonuçları</h2>
+              <span id="live-sync-pill" class="px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[9px] font-bold flex items-center gap-1 shrink-0">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>TBF MS</span>
+              </span>
+            </div>
+            <p id="fixture-sync-status" class="text-[11px] text-slate-400 truncate">Biten maç skorları tbf.org.tr/ligler/bsl/maclar üzerinden çekilir</p>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="openLeagueSettingsModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition" title="Lig Başlığı ve Takım Bilgilerini Düzenle">
+              <span>⚙️</span>
+              <span>Ayarlar</span>
+            </button>
+            <button id="btn-sync-tbf" onclick="syncFixturesFromTBF(true)" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition">
+              <span>🔄</span>
+              <span class="hidden sm:inline">Tabloyu Eşitle</span>
+              <span class="sm:hidden">Eşitle</span>
+            </button>
+            <a href="https://tbf.org.tr/ligler/bsl/maclar" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 text-[11px] font-semibold">
+              TBF ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <select id="week-select" onchange="handleFixtureWeekChange()" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-amber-500"></select>
+          <button id="btn-only-7253" onclick="toggleOnly7253()" class="px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300 transition">
+            Sadece #7253
+          </button>
+        </div>
+      </div>
+
+      <!-- LİG BAŞLIĞI & TAKIM BİLGİLERİ AYARLAR MODALI -->
+      <div id="league-settings-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+          <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between gap-2 shrink-0">
+            <div>
+              <h3 class="text-sm font-bold text-white">Fikstür, Lig Başlığı &amp; Takım Ayarları</h3>
+              <p class="text-[11px] text-slate-400">Değişiklikler Fikstür, Puan Durumu ve Ortak Bulut üzerinde anında güncellenir</p>
+            </div>
+            <button type="button" onclick="closeLeagueSettingsModal()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold shrink-0">✕</button>
+          </div>
+
+          <div class="p-4 overflow-y-auto space-y-4 flex-1">
+            <!-- LİG / SEZON BAŞLIĞI -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1.5">
+              <label for="settings-league-title" class="block text-xs font-bold text-amber-300">Lig / Sezon Başlığı</label>
+              <input id="settings-league-title" type="text" placeholder="TBF BSL 2026-2027"
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-amber-500" />
+              <p class="text-[10px] text-slate-400">
+                Örn: <b>TBF BSL 2026-2027</b> — Kaydettiğinizde hem Fikstür hem de Puan Durumu başlıkları otomatik güncellenir.
+              </p>
+            </div>
+
+            <!-- 16 TAKIM BİLGİLERİ LİSTESİ -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold text-white">Takım Bilgileri &amp; Salon Eşleştirmeleri (16 Takım)</h4>
+                <span class="text-[10px] text-slate-400">Takım adı, salon ve #7253 durumu</span>
+              </div>
+              <div id="settings-teams-list" class="space-y-2"></div>
+            </div>
+          </div>
+
+          <div class="px-4 py-3 border-t border-slate-800 bg-slate-950/80 flex items-center justify-between gap-2 shrink-0">
+            <button type="button" onclick="resetLeagueSettingsToDefault()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold active:scale-95 transition">
+              Varsayılana Sıfırla
+            </button>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="closeLeagueSettingsModal()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
+                İptal
+              </button>
+              <button type="button" onclick="saveLeagueSettings()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow active:scale-95 transition">
+                Değişiklikleri Kaydet
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HIZLI SAAT & SKOR GİRİŞ MODALI -->
+      <div id="quick-score-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-2xl">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white">Maç Saati &amp; Sonucu Düzenle</h3>
+            <button type="button" onclick="closeQuickScoreModal()" class="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">✕</button>
+          </div>
+          <p id="qs-match-title" class="text-xs text-amber-300 font-semibold"></p>
+
+          <!-- MANUEL TARİH (TAKVİM SEÇİCİ) & SAAT GİRİŞİ -->
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 space-y-2">
+            <div class="grid grid-cols-5 gap-2">
+              <div class="col-span-3">
+                <label for="qs-match-date" class="block text-[10px] text-slate-400 mb-1">Maç Tarihi / Günü</label>
+                <div class="relative flex items-center">
+                  <input id="qs-match-date" type="text" placeholder="15 Kasım 2026 Pazar" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-white focus:outline-none focus:border-amber-500 pr-8" />
+                  <label for="qs-match-date-picker" title="Takvimden Tarih Seç" class="absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 rounded-md bg-amber-500/20 hover:bg-amber-500/35 border border-amber-500/40 text-amber-300 flex items-center justify-center text-xs cursor-pointer overflow-hidden active:scale-95 transition">
+                    <span class="pointer-events-none">📅</span>
+                    <input id="qs-match-date-picker" type="date" onchange="applyQuickDateFromPicker(this.value)" oninput="applyQuickDateFromPicker(this.value)" class="calendar-overlay-input absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                  </label>
+                </div>
+              </div>
+              <div class="col-span-2">
+                <label for="qs-match-time" class="block text-[10px] text-slate-400 mb-1">Maç Saati</label>
+                <input id="qs-match-time" type="text" inputmode="numeric" maxlength="5" placeholder="18:00"
+                  onfocus="this.select()"
+                  onblur="formatQuickMatchTimeInput()"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-mono font-extrabold text-amber-300 text-center focus:outline-none focus:border-amber-500" />
+              </div>
+            </div>
+            <div class="flex items-center gap-1 flex-wrap">
+              <span class="text-[10px] text-slate-500 mr-0.5">Hızlı Saat:</span>
+              <button type="button" onclick="setQuickMatchTime('13:00')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-200">13:00</button>
+              <button type="button" onclick="setQuickMatchTime('15:30')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-200">15:30</button>
+              <button type="button" onclick="setQuickMatchTime('18:00')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-200">18:00</button>
+              <button type="button" onclick="setQuickMatchTime('19:00')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-200">19:00</button>
+              <button type="button" onclick="setQuickMatchTime('20:30')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-200">20:30</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label id="qs-home-label" class="block text-[10px] text-slate-400 mb-1 truncate">Ev Sahibi</label>
+              <input id="qs-home-score" type="number" min="0" max="200" placeholder="Skor (opsiyonel)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm font-bold text-white text-center focus:outline-none focus:border-emerald-500" />
+            </div>
+            <div>
+              <label id="qs-away-label" class="block text-[10px] text-slate-400 mb-1 truncate">Deplasman</label>
+              <input id="qs-away-score" type="number" min="0" max="200" placeholder="Skor (opsiyonel)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm font-bold text-white text-center focus:outline-none focus:border-emerald-500" />
+            </div>
+          </div>
+          <div class="flex items-center gap-2 pt-1">
+            <button type="button" onclick="clearQuickScore()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
+              Sıfırla
+            </button>
+            <button type="button" onclick="saveQuickScore()" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">
+              Saat &amp; Skoru Kaydet
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="fixtures-list" class="space-y-2.5"></div>
+    </section>
+
+    <!-- 5. 9 SAHA DURUM & BAKIM SEKMESİ -->
+    <section id="tab-arenas" class="hidden space-y-3">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-bold text-white">#7253 Projesi • 9 Salon Durumu</h2>
+          <p class="text-[11px] text-slate-400">Notlar ve durumlar telefon hafızasında saklanır</p>
+        </div>
+        <button onclick="resetArenasToDefault()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[11px] font-semibold text-slate-300 active:scale-95">
+          Varsayılana Dön
+        </button>
+      </div>
+
+      <div id="arenas-list" class="space-y-2.5"></div>
+    </section>
+
+    <!-- 6. PUAN DURUMU SEKMESİ (TBF BSL) -->
+    <section id="tab-standings" class="hidden space-y-3">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 space-y-2">
+        <div class="flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <h2 id="standings-league-heading" class="text-sm font-bold text-white truncate">TBF BSL 2026-2027 Puan Durumu</h2>
+              <span class="px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[9px] font-bold flex items-center gap-1 shrink-0">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>OTO 45sn</span>
+              </span>
+            </div>
+            <p id="standings-sync-status" class="text-[11px] text-slate-400 truncate">tbf.org.tr/ligler/bsl/puan-durumu otomatik takip ediliyor...</p>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button id="btn-sync-standings" onclick="syncStandingsFromTBF(true)" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition">
+              <span>🔄</span>
+              <span>Hesapla</span>
+            </button>
+            <a href="https://tbf.org.tr/ligler/bsl/puan-durumu" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 text-[11px] font-semibold">
+              TBF ↗
+            </a>
+          </div>
+        </div>
+        <div class="flex items-center justify-between text-[10px] text-slate-400 pt-0.5">
+          <span>Sıra • Takım (#7253 Rozetli)</span>
+          <span>O • G • M • AS/YS • Av • P</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950/90 border-b border-slate-800 text-[10px] font-bold text-slate-400 uppercase">
+                <th class="py-2.5 pl-3 pr-1.5 w-8">#</th>
+                <th class="py-2.5 px-1.5">Takım</th>
+                <th class="py-2.5 px-1.5 text-center">O</th>
+                <th class="py-2.5 px-1.5 text-center text-emerald-400">G</th>
+                <th class="py-2.5 px-1.5 text-center text-rose-400">M</th>
+                <th class="py-2.5 px-1.5 text-center hidden sm:table-cell">AS-YS</th>
+                <th class="py-2.5 px-1.5 text-center">Av</th>
+                <th class="py-2.5 pl-1.5 pr-3 text-center text-amber-300">P</th>
+              </tr>
+            </thead>
+            <tbody id="standings-table-body" class="divide-y divide-slate-800/70 text-xs"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. HAFTALIK ÇALIŞMA PROGRAMI SEKMESİ -->
+    <section id="tab-schedule" class="hidden space-y-3">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h2 class="text-sm font-bold text-white">Haftalık Çalışma &amp; İzin Programım</h2>
+            <p class="text-[11px] text-slate-400">Başlangıç-bitiş saatlerinizi ve izin günlerinizi düzenleyin (otomatik kaydedilir)</p>
+          </div>
+          <button onclick="resetScheduleToDefault()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[11px] font-semibold text-slate-300 active:scale-95 shrink-0">
+            Şablonu Sıfırla
+          </button>
+        </div>
+
+        <!-- ÖZET İSTATİSTİK KARTLARI -->
+        <div class="grid grid-cols-3 gap-2 pt-0.5">
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-2 text-center">
+            <div class="text-[10px] text-slate-400">Çalışma Günü</div>
+            <div id="sched-work-days" class="text-sm font-extrabold text-emerald-400 mt-0.5">5 Gün</div>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-2 text-center">
+            <div class="text-[10px] text-slate-400">İzin Günü</div>
+            <div id="sched-off-days" class="text-sm font-extrabold text-amber-400 mt-0.5">2 Gün</div>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-2 text-center">
+            <div class="text-[10px] text-slate-400">Haftalık Süre</div>
+            <div id="sched-total-hours" class="text-sm font-extrabold text-sky-400 mt-0.5">45s 00dk</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CANLI TABLO ÇIKTISI & PNG İNDİRME ALANI -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h3 class="text-xs font-bold text-white">Tablo Çıktısı Önizleme</h3>
+            <p class="text-[10px] text-slate-400">Girdiğiniz saat, izin ve salon/not bilgilerine göre anlık oluşur</p>
+          </div>
+          <button type="button" onclick="downloadScheduleTablePng()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold flex items-center gap-1.5 active:scale-95 transition shrink-0 shadow">
+            <span>📥</span>
+            <span>PNG İndir</span>
+          </button>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 flex items-center gap-2">
+          <label for="sched-banner-input" class="text-[10px] font-bold text-rose-400 shrink-0">Üst Başlık:</label>
+          <select id="sched-banner-input" onchange="updateScheduleBannerTitle(this.value)"
+            class="flex-1 bg-slate-950 text-xs font-bold text-white focus:outline-none cursor-pointer">
+            <option value="HAFTALIK ÇALIŞMA BİLGİLENDİRMESİ">HAFTALIK ÇALIŞMA BİLGİLENDİRMESİ</option>
+            <option value="İLEEEM İÇİN HAFTALIK ÇALIŞMA BİLGİLENDİRMESİ">İLEEEM İÇİN HAFTALIK ÇALIŞMA BİLGİLENDİRMESİ</option>
+          </select>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl bg-white p-4 sm:p-6 border border-slate-700">
+          <div id="schedule-visual-table" class="min-w-[640px]"></div>
+        </div>
+      </div>
+
+      <div id="schedule-days-list" class="space-y-2.5"></div>
+    </section>
+
+  </main>
+
+  <!-- KURULUM REHBERİ MODALI -->
+  <div id="pwa-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-4 space-y-3 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold text-white">Telefon Ana Ekranına Uygulama Olarak Ekleme</h3>
+        <button onclick="closePwaModal()" class="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">✕</button>
+      </div>
+      <div class="space-y-2.5 text-xs text-slate-300">
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5">
+          <div class="font-bold text-amber-400 mb-1">📱 iPhone (Safari):</div>
+          <p>1. Web linkini <b>Safari</b> ile açın.</p>
+          <p>2. Alt bardaki <b>Paylaş (↑)</b> simgesine basın.</p>
+          <p>3. <b>Ana Ekrana Ekle</b> seçeneğine dokunup onaylayın.</p>
+        </div>
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5">
+          <div class="font-bold text-emerald-400 mb-1">🤖 Android (Chrome):</div>
+          <p>1. Linki <b>Chrome</b> ile açın.</p>
+          <p>2. Sağ üstteki <b>Üç Nokta (⋮) &gt; Ana ekrana ekle / Uygulamayı yükle</b> seçeneğine dokunun.</p>
+        </div>
+      </div>
+      <button onclick="closePwaModal()" class="w-full py-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs">
+        Anladım
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ==================== 1. SAHA PLANI VE 25 PANEL VERİ YAPISI ====================
+    const zoneDiagnostics = {
+      z1: {
+        badge: '1. Sol Pota Yanı (4 Panel)',
+        title: 'Sol Pota Yanı • Paneller 1 - 4',
+        data: 'Data 1 (Sol Yan üzerinden kaskat)',
+        power: 'Power 1 (Sol Pota 1. Panel yanından giriş)',
+        steps: [
+          'Sol pota 1. panelin dışındaki Power1 besleme soketini kontrol edin.',
+          'Veri hattı Data 1 olarak Sol Yan 5. panel üzerinden köşe dönüşüyle gelir; 90° köşe atlama kablosunu kontrol edin.',
+          'Tüm 4 panel sönükse Power Box içindeki Power 1 sigortasını kontrol edin.'
+        ]
+      },
+      z2: {
+        badge: '2. Sol Yan • Oyuncu Önü (5 Panel)',
+        title: 'Sol Yan • Paneller 1 - 5',
+        data: 'Data 1 (5. Panel altından giriş)',
+        power: 'Power 2 (5. Panel altından giriş)',
+        steps: [
+          'Sol Yan 5. panelin dışındaki Data 1 ve Power 2 giriş soketlerini kontrol edin.',
+          'Veri akışı 5. panelden 1. panele doğru ilerler ve Sol Pota 1. panele atlar.',
+          'Ara panellerden birinden sonrası yoksa o panelin çıkış RJ45 kablosunu yedek kablo ile değiştirin.'
+        ]
+      },
+      z3: {
+        badge: '3. Merkez Orta Saha (7 Panel)',
+        title: 'Merkez Orta Saha • Paneller 1 - 7',
+        data: 'Master: Data 2 (7. Panel altı) | Backup: Data 4 (1. Panel altı)',
+        power: 'Power 3 (1-3. Paneller) • Power 1 (4-7. Paneller)',
+        steps: [
+          '1, 2 ve 3. paneller sönükse 3. panelin dışındaki Power 3 hattını kontrol edin.',
+          '4, 5, 6 ve 7. paneller sönükse 7. panelin dışındaki Power 1 hattını kontrol edin.',
+          '7 panelin tamamında veri yoksa Master Data 2 (7. panel altı) ve Backup Data 4 (1. panel altı) kablolarını kontrol edin.'
+        ]
+      },
+      z4: {
+        badge: '4. Sağ Yan • Oyuncu Önü (5 Panel)',
+        title: 'Sağ Yan • Paneller 1 - 5',
+        data: 'Data 3 (Sağ Pota 4. panel üzerinden kaskat)',
+        power: 'Power 3 (1. Panel altından giriş)',
+        steps: [
+          'Sağ Yan 1. panelin dışındaki Power 3 besleme girişini kontrol edin.',
+          'Veri hattı Data 3 olarak Sağ Pota 4. panelden köşe dönüşüyle gelir; Sağ 90° köşe atlama kablosunu test edin.',
+          'Sağ Yan panellerde görüntü var ama renk/senkron bozuksa alıcı kart RCFGX dosyasını tekrar gönderin.'
+        ]
+      },
+      z5: {
+        badge: '5. Sağ Pota Yanı (4 Panel)',
+        title: 'Sağ Pota Yanı • Paneller 1 - 4',
+        data: 'Data 3 (4. Panel yanından giriş)',
+        power: 'Power 2 (1. Panel yanından giriş)',
+        steps: [
+          'Sağ Pota 1. panelin dışındaki Power 2 besleme soketini kontrol edin.',
+          'Sağ Pota 4. panelin dışındaki Data 3 ana veri girişini kontrol edin.',
+          'Sağ Pota çalışıyor ama Sağ Yan 5 panel çalışmıyorsa 1. panel ile Sağ Yan arasındaki 90° köşe Data 3 kablosunu değiştirin.'
+        ]
+      },
+      cornerLeft: {
+        badge: 'Sol 90° Köşe Birleşimi',
+        title: 'Sol 90° Köşe Atlama Hattı (Sol Yan 1 ↔ Sol Pota 1)',
+        data: 'Data 1 (Köşe Atlama Kablosu)',
+        power: 'Power 2 (Sol Yan) / Power 1 (Sol Pota)',
+        steps: [
+          'Sol Yan 1. panel çıkışından Sol Pota 1. panel girişine giden 90° köşe RJ45 atlama kablosunu kontrol edin.',
+          'Sol Yan çalışıyor ancak Sol Pota 4 panelin tamamı siyahsa bu köşe data kablosunu yedek kabloyla değiştirin.',
+          'Kablo değişimine rağmen görüntü gelmiyorsa Sol Pota 1. paneli atlatarak (bypass) doğrudan 2. panele giriş yapın.'
+        ]
+      },
+      cornerRight: {
+        badge: 'Sağ 90° Köşe Birleşimi',
+        title: 'Sağ 90° Köşe Atlama Hattı (Sağ Pota 1 ↔ Sağ Yan 1)',
+        data: 'Data 3 (Köşe Atlama Kablosu)',
+        power: 'Power 2 (Sağ Pota) / Power 3 (Sağ Yan)',
+        steps: [
+          'Sağ Pota 1. panel çıkışından Sağ Yan 1. panel girişine giden 90° köşe RJ45 atlama kablosunu kontrol edin.',
+          'Sağ Pota 4 panel çalışıyor ancak Sağ Yan 5 panelin tamamı siyahsa bu köşe Data 3 kablosunu yedek kabloyla değiştirin.',
+          'Kablo değişimine rağmen görüntü gelmiyorsa Sağ Yan 1. paneli atlatarak (bypass) doğrudan 2. panele giriş yapın.'
+        ]
+      }
+    };
+
+    let activeSelection = { type: 'panel', zone: 'z3', num: 1 };
+    let showWiringLines = true;
+
+    const zoneMetaMap = {
+      z1: { name: '1. SOL POTA', fullName: '1. Sol Pota', count: 4, offset: 0 },
+      z2: { name: '2. SOL YAN', fullName: '2. Sol Yan', count: 5, offset: 4 },
+      z3: { name: '3. MERKEZ ORTA SAHA', fullName: '3. Merkez Orta Saha', count: 7, offset: 9 },
+      z4: { name: '4. SAĞ YAN', fullName: '4. Sağ Yan', count: 5, offset: 16 },
+      z5: { name: '5. SAĞ POTA', fullName: '5. Sağ Pota', count: 4, offset: 21 }
+    };
+
+    function viewWholeActiveZone() {
+      if (activeSelection && activeSelection.zone && zoneMetaMap[activeSelection.zone]) {
+        selectZone(activeSelection.zone);
+      }
+    }
+
+    function updateZoneQuickButtons(activeZoneKey) {
+      const styleMap = {
+        z1: {
+          idle: 'zone-btn px-2 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[11px] font-bold transition active:scale-95',
+          active: 'zone-btn px-2 py-1.5 rounded-xl bg-amber-400 border border-white text-slate-950 text-[11px] font-extrabold shadow-md transition active:scale-95'
+        },
+        z2: {
+          idle: 'zone-btn px-2 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/40 text-sky-300 text-[11px] font-bold transition active:scale-95',
+          active: 'zone-btn px-2 py-1.5 rounded-xl bg-sky-400 border border-white text-slate-950 text-[11px] font-extrabold shadow-md transition active:scale-95'
+        },
+        z3: {
+          idle: 'zone-btn px-2 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold transition active:scale-95',
+          active: 'zone-btn px-2 py-1.5 rounded-xl bg-emerald-400 border border-white text-slate-950 text-[11px] font-extrabold shadow-md transition active:scale-95'
+        },
+        z4: {
+          idle: 'zone-btn px-2 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[11px] font-bold transition active:scale-95',
+          active: 'zone-btn px-2 py-1.5 rounded-xl bg-purple-500 border border-white text-white text-[11px] font-extrabold shadow-md transition active:scale-95'
+        },
+        z5: {
+          idle: 'zone-btn col-span-2 sm:col-span-1 px-2 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[11px] font-bold transition active:scale-95',
+          active: 'zone-btn col-span-2 sm:col-span-1 px-2 py-1.5 rounded-xl bg-rose-500 border border-white text-white text-[11px] font-extrabold shadow-md transition active:scale-95'
+        }
+      };
+
+      document.querySelectorAll('[data-zone-btn]').forEach(btn => {
+        const key = btn.getAttribute('data-zone-btn');
+        if (!styleMap[key]) return;
+        btn.className = key === activeZoneKey ? styleMap[key].active : styleMap[key].idle;
+      });
+    }
+
+    function renderCourtPanels() {
+      const container = document.getElementById('court-diagram');
+      if (!container) return;
+
+      const isSelected = (z, n) =>
+        (activeSelection.type === 'panel' && activeSelection.zone === z && activeSelection.num === n) ||
+        (activeSelection.type === 'zone' && activeSelection.zone === z);
+
+      const makeHPanel = (zoneKey, num, baseCls, activeCls) => {
+        const sel = isSelected(zoneKey, num);
+        return `
+          <button onclick="selectPanel('${zoneKey}', ${num})"
+            class="w-full aspect-[2.1/1] min-h-[14px] sm:min-h-[18px] min-w-0 rounded-[3px] sm:rounded-[4px] border text-[7.5px] sm:text-[9.5px] font-extrabold flex items-center justify-center transition active:scale-95 ${sel ? activeCls : baseCls}">
+            ${num}
+          </button>
+        `;
+      };
+
+      const makeVPanel = (zoneKey, num, baseCls, activeCls) => {
+        const sel = isSelected(zoneKey, num);
+        return `
+          <button onclick="selectPanel('${zoneKey}', ${num})"
+            class="w-4 sm:w-5 h-7 sm:h-9 rounded-[3px] sm:rounded-[4px] border text-[7.5px] sm:text-[9.5px] font-extrabold flex items-center justify-center transition active:scale-95 ${sel ? activeCls : baseCls}">
+            ${num}
+          </button>
+        `;
+      };
+
+      const dPill = (txt) => `<span class="inline-flex items-center justify-center px-1 sm:px-1.5 py-[1px] sm:py-[2px] rounded-full bg-rose-950/95 border border-rose-500/80 text-rose-200 text-[6px] sm:text-[8px] font-bold leading-none whitespace-nowrap shadow-sm z-20">${txt}</span>`;
+      const pPill = (txt) => `<span class="inline-flex items-center justify-center px-1 sm:px-1.5 py-[1px] sm:py-[2px] rounded-full bg-sky-950/95 border border-sky-400/80 text-sky-200 text-[6px] sm:text-[8px] font-bold leading-none whitespace-nowrap shadow-sm z-20">${txt}</span>`;
+
+      const leftCornerSel = activeSelection.type === 'zone' && activeSelection.zone === 'cornerLeft';
+      const rightCornerSel = activeSelection.type === 'zone' && activeSelection.zone === 'cornerRight';
+      const lineShow = showWiringLines ? '' : 'hidden';
+
+      container.innerHTML = `
+        <div class="relative flex flex-col select-none pt-0.5 pb-0.5 w-full">
+
+          <div class="relative flex items-center justify-between px-4 sm:px-14 z-20 mb-1.5">
+            <div class="ml-3 sm:ml-12 px-2.5 sm:px-4 py-1 rounded-lg bg-slate-900 border border-sky-400/80 text-sky-200 text-[8px] sm:text-[10px] font-extrabold shadow-[0_0_10px_rgba(56,189,248,0.2)]">
+              Power Box
+            </div>
+            <div class="mr-2 sm:mr-10 px-2.5 sm:px-4 py-1 rounded-lg bg-slate-900 border border-rose-500/80 text-rose-200 text-[8px] sm:text-[10px] font-extrabold shadow-[0_0_10px_rgba(244,63,94,0.2)]">
+              Power&amp;Controller Box
+            </div>
+          </div>
+
+          <div class="grid grid-cols-[58px_1fr_58px] sm:grid-cols-[96px_1fr_96px] items-center gap-1 sm:gap-2.5 mb-1">
+            <div></div>
+            <div class="grid grid-cols-[5fr_7fr_5fr] gap-2 sm:gap-4 items-center text-center">
+              <div class="text-[6.5px] sm:text-[9px] font-extrabold text-sky-400 tracking-tight truncate">
+                2. SOL YAN (5 PANEL)
+              </div>
+              <div class="border-t border-emerald-500/40 pt-0.5 text-[6.5px] sm:text-[9px] font-extrabold text-emerald-400 tracking-tight truncate">
+                3. MERKEZ ORTA SAHA (7 PANEL)
+              </div>
+              <div class="text-[6.5px] sm:text-[9px] font-extrabold text-purple-400 tracking-tight truncate">
+                4. SAĞ YAN (5 PANEL)
+              </div>
+            </div>
+            <div></div>
+          </div>
+
+          <div class="grid grid-cols-[58px_1fr_58px] sm:grid-cols-[96px_1fr_96px] items-end gap-1 sm:gap-2.5 mt-0.5">
+            <div></div>
+            <div class="grid grid-cols-[5fr_7fr_5fr] gap-2 sm:gap-4 items-end">
+              <div class="grid grid-cols-5 gap-[2px] sm:gap-1 items-end">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div class="flex flex-col items-center gap-0.5 overflow-visible">
+                  ${dPill('Data1')}
+                  ${pPill('Power2')}
+                  <div class="${lineShow} w-[1.5px] h-2 border-l border-dashed border-sky-400/80"></div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-7 gap-[2px] sm:gap-1 items-end">
+                <div class="flex flex-col items-center gap-0.5 overflow-visible">
+                  ${dPill('Data4')}
+                  <div class="${lineShow} w-[1.5px] h-2 border-l border-dashed border-rose-400/80"></div>
+                </div>
+                <div></div>
+                <div class="flex flex-col items-center gap-0.5 overflow-visible">
+                  ${pPill('Power3')}
+                  <div class="${lineShow} w-[1.5px] h-2 border-l border-dashed border-sky-400/80"></div>
+                </div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div class="flex flex-col items-center gap-0.5 overflow-visible">
+                  ${dPill('Data2')}
+                  ${pPill('Power1')}
+                  <div class="${lineShow} w-[1.5px] h-2 border-l border-dashed border-rose-400/80"></div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-5 gap-[2px] sm:gap-1 items-end">
+                <div class="flex flex-col items-center gap-0.5 overflow-visible">
+                  ${pPill('Power3')}
+                  <div class="${lineShow} w-[1.5px] h-2 border-l border-dashed border-sky-400/80"></div>
+                </div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+            <div></div>
+          </div>
+
+          <div class="grid grid-cols-[58px_1fr_58px] sm:grid-cols-[96px_1fr_96px] items-center gap-1 sm:gap-2.5 mt-1">
+            <div class="flex items-center justify-end gap-0.5 sm:gap-1 pr-0.5">
+              <div class="flex-1"></div>
+              <div class="w-2.5 sm:w-3.5"></div>
+              <div class="w-4 sm:w-5 flex items-center justify-center">
+                <button onclick="selectZone('cornerLeft')"
+                  class="w-4 h-4 sm:w-5 sm:h-5 rounded-full border ${leftCornerSel ? 'bg-rose-500 border-white text-white scale-110' : 'bg-rose-600/90 border-rose-200 text-white hover:bg-rose-500'} text-[7px] sm:text-[8px] font-extrabold flex items-center justify-center shadow-md transition">
+                  90°
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-[5fr_7fr_5fr] gap-2 sm:gap-4 items-center">
+              <div class="grid grid-cols-5 gap-[2px] sm:gap-1">
+                ${[1,2,3,4,5].map(n => makeHPanel(
+                  'z2', n,
+                  'bg-sky-950/50 border-sky-400/70 text-sky-200 hover:bg-sky-900/70',
+                  'bg-sky-500 border-white text-slate-950 shadow-[0_0_10px_rgba(56,189,248,0.7)]'
+                )).join('')}
+              </div>
+
+              <div class="grid grid-cols-7 gap-[2px] sm:gap-1 p-[2px] rounded-md bg-emerald-500/10 shadow-[0_0_12px_rgba(16,185,129,0.2)]">
+                ${[1,2,3,4,5,6,7].map(n => makeHPanel(
+                  'z3', n,
+                  'bg-emerald-950/70 border-emerald-400/80 text-emerald-200 hover:bg-emerald-900/80',
+                  'bg-emerald-400 border-white text-slate-950 shadow-[0_0_12px_rgba(52,211,153,0.85)]'
+                )).join('')}
+              </div>
+
+              <div class="grid grid-cols-5 gap-[2px] sm:gap-1">
+                ${[1,2,3,4,5].map(n => makeHPanel(
+                  'z4', n,
+                  'bg-purple-950/50 border-purple-400/70 text-purple-200 hover:bg-purple-900/70',
+                  'bg-purple-500 border-white text-white shadow-[0_0_10px_rgba(168,85,247,0.7)]'
+                )).join('')}
+              </div>
+            </div>
+
+            <div class="flex items-center justify-start gap-0.5 sm:gap-1 pl-0.5">
+              <div class="w-4 sm:w-5 flex items-center justify-center">
+                <button onclick="selectZone('cornerRight')"
+                  class="w-4 h-4 sm:w-5 sm:h-5 rounded-full border ${rightCornerSel ? 'bg-rose-500 border-white text-white scale-110' : 'bg-rose-600/90 border-rose-200 text-white hover:bg-rose-500'} text-[7px] sm:text-[8px] font-extrabold flex items-center justify-center shadow-md transition">
+                  90°
+                </button>
+              </div>
+              <div class="w-2.5 sm:w-3.5"></div>
+              <div class="flex-1"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-[58px_1fr_58px] sm:grid-cols-[96px_1fr_96px] items-stretch gap-1 sm:gap-2.5 mt-1">
+            <div class="flex items-start justify-end gap-[2px] sm:gap-1 pr-0.5 pt-0.5">
+              <div class="flex-1 flex flex-col justify-start items-end gap-[2px] sm:gap-[3px] pl-0.5 overflow-visible">
+                <div class="h-7 sm:h-9 flex items-center justify-end">${pPill('Power1')}</div>
+                <div class="h-7 sm:h-9"></div>
+                <div class="h-7 sm:h-9"></div>
+                <div class="h-7 sm:h-9"></div>
+              </div>
+              <div class="w-2.5 sm:w-3.5 flex flex-col justify-start gap-[2px] sm:gap-[3px] shrink-0">
+                <div class="h-7 sm:h-9"></div>
+                <div class="h-[58px] sm:h-[75px] flex items-center justify-center">
+                  <span class="-rotate-90 whitespace-nowrap text-[6.5px] sm:text-[8.5px] font-extrabold text-amber-400 tracking-tight">
+                    1. SOL POTA
+                  </span>
+                </div>
+                <div class="h-7 sm:h-9"></div>
+              </div>
+              <div class="w-4 sm:w-5 flex flex-col justify-start gap-[2px] sm:gap-[3px] shrink-0">
+                ${[1,2,3,4].map(n => makeVPanel(
+                  'z1', n,
+                  'bg-amber-950/50 border-amber-400/70 text-amber-200 hover:bg-amber-900/70',
+                  'bg-amber-400 border-white text-slate-950 shadow-[0_0_10px_rgba(251,191,36,0.75)]'
+                )).join('')}
+              </div>
+            </div>
+
+            <div class="relative rounded-xl border border-slate-700/90 bg-[#080f1e] overflow-hidden min-h-[145px] sm:min-h-[185px] flex items-center justify-center">
+              <svg viewBox="0 0 420 200" class="w-full h-full stroke-slate-700/80 fill-none" stroke-width="1.5">
+                <line x1="210" y1="0" x2="210" y2="200" />
+                <circle cx="210" cy="100" r="24" />
+                <rect x="0" y="66" width="68" height="68" />
+                <path d="M 0 18 L 42 18 A 84 84 0 0 1 42 182 L 0 182" />
+                <rect x="352" y="66" width="68" height="68" />
+                <path d="M 420 18 L 378 18 A 84 84 0 0 0 378 182 L 420 182" />
+              </svg>
+              <div class="absolute inset-0 pointer-events-none flex items-center justify-between px-3 sm:px-6 text-[7.5px] sm:text-[9px] font-bold text-slate-500">
+                <span>SOL POTA</span>
+                <span>SAĞ POTA</span>
+              </div>
+            </div>
+
+            <div class="flex items-start justify-start gap-[2px] sm:gap-1 pl-0.5 pt-0.5">
+              <div class="w-4 sm:w-5 flex flex-col justify-start gap-[2px] sm:gap-[3px] shrink-0">
+                ${[1,2,3,4].map(n => makeVPanel(
+                  'z5', n,
+                  'bg-rose-950/50 border-rose-400/70 text-rose-200 hover:bg-rose-900/70',
+                  'bg-rose-500 border-white text-white shadow-[0_0_10px_rgba(244,63,94,0.75)]'
+                )).join('')}
+              </div>
+              <div class="w-2.5 sm:w-3.5 flex flex-col justify-start gap-[2px] sm:gap-[3px] shrink-0">
+                <div class="h-7 sm:h-9"></div>
+                <div class="h-[58px] sm:h-[75px] flex items-center justify-center">
+                  <span class="rotate-90 whitespace-nowrap text-[6.5px] sm:text-[8.5px] font-extrabold text-rose-400 tracking-tight">
+                    5. SAĞ POTA
+                  </span>
+                </div>
+                <div class="h-7 sm:h-9"></div>
+              </div>
+              <div class="flex-1 flex flex-col justify-start items-start gap-[2px] sm:gap-[3px] pr-0.5 overflow-visible">
+                <div class="h-7 sm:h-9 flex items-center justify-start">${pPill('Power2')}</div>
+                <div class="h-7 sm:h-9"></div>
+                <div class="h-7 sm:h-9"></div>
+                <div class="h-7 sm:h-9 flex items-center justify-start">${dPill('Data 3')}</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleWiringLines() {
+      showWiringLines = !showWiringLines;
+      renderCourtPanels();
+    }
+
+    function selectZone(zoneKey) {
+      const z = zoneDiagnostics[zoneKey];
+      if (!z) return;
+      activeSelection = { type: 'zone', zone: zoneKey, num: null };
+      renderCourtPanels();
+      updateZoneQuickButtons(zoneKey);
+      const meta = zoneMetaMap[zoneKey];
+      const wholeBtn = document.getElementById('btn-view-whole-zone');
+      if (wholeBtn) {
+        if (meta) {
+          wholeBtn.classList.remove('hidden');
+          wholeBtn.textContent = `Tüm Bölge Seçili (${meta.count} Panel)`;
+        } else {
+          wholeBtn.classList.add('hidden');
+        }
+      }
+      document.getElementById('detail-badge').textContent = z.badge.toUpperCase();
+      document.getElementById('detail-title').textContent = z.title;
+      document.getElementById('detail-data').textContent = z.data;
+      document.getElementById('detail-power').textContent = z.power;
+      document.getElementById('detail-steps').innerHTML = z.steps.map(s => `<li>${s}</li>`).join('');
+    }
+
+    function selectPanel(zoneKey, panelNo) {
+      const z = zoneDiagnostics[zoneKey];
+      if (!z) return;
+      activeSelection = { type: 'panel', zone: zoneKey, num: panelNo };
+      renderCourtPanels();
+      updateZoneQuickButtons(zoneKey);
+      const meta = zoneMetaMap[zoneKey];
+      const globalNo = meta ? meta.offset + panelNo : panelNo;
+      const wholeBtn = document.getElementById('btn-view-whole-zone');
+      if (wholeBtn && meta) {
+        wholeBtn.classList.remove('hidden');
+        wholeBtn.textContent = `Tüm Bölgeyi Gör (${meta.count} Panel)`;
+      }
+      let customPower = z.power;
+      if (zoneKey === 'z3') {
+        customPower = panelNo <= 3
+          ? 'Power 3 (Merkez 1-2-3 Nolu Paneller)'
+          : 'Power 1 (Merkez 4-5-6-7 Nolu Paneller)';
+      }
+      document.getElementById('detail-badge').textContent = `${meta.name} • ${panelNo}. PANEL (GENEL #${globalNo}/25)`;
+      document.getElementById('detail-title').textContent = `${meta.fullName} — ${panelNo}. Panel (Kabin) Teşhisi`;
+      document.getElementById('detail-data').textContent = z.data;
+      document.getElementById('detail-power').textContent = customPower;
+      document.getElementById('detail-steps').innerHTML = [
+        `Seçili kabin: <b>${panelNo}. Panel</b> (Genel #${globalNo}/25). Arka kapak yeşil alıcı kart sinyal LED'ini kontrol edin.`,
+        ...z.steps
+      ].map(s => `<li>${s}</li>`).join('');
+    }
+
+    // ==================== 2. ARIZA TEŞHİS SENARYOLARI ====================
+    const troubleshootingScenarios = [
+      {
+        id: 'all-black',
+        title: '🚨 25 Panelin Tamamında Görüntü Bir Anda Gitti',
+        severity: 'Kritik • Ana Merkez',
+        steps: [
+          'Power&Controller Box içindeki TB60 ön panel ışıklarına bakın (PWR kırmızı yanıyor mu?).',
+          'RUN ışığı 4 saniyede bir yanıp sönüyorsa görüntü kaynağı kesilmiştir; SWITCH tuşuna basarak Senkron/Asenkron modunu değiştirin.',
+          'ViPlex Express > Control > Screen Status Control menüsünden Blackout yerine Normal komutuna basın.',
+          'TB60 ışıkları normal ama 25 panel de siyahsa Power Box ana şalterini kontrol edin.'
+        ]
+      },
+      {
+        id: 'corner-drop',
+        title: '📐 90° Köşe Dönüşünden Sonra Yan Paneller Yok',
+        severity: 'Yüksek • Data 1 / Data 3',
+        steps: [
+          'Sol köşe arızalıysa Sol Pota 1 ile Sol Yan 1 arasındaki Data 1 atlama kablosunu yedek kabloyla değiştirin.',
+          'Sağ köşe arızalıysa Sağ Pota 1 ile Sağ Yan 1 arasındaki Data 3 atlama kablosunu yedek kabloyla değiştirin.',
+          'Kablo değişimine rağmen gelmiyorsa köşe sonrası 1. paneli atlatarak (bypass) doğrudan 2. panele girin.'
+        ]
+      },
+      {
+        id: 'single-module',
+        title: '⬛ Tek Modül Karardı / Çizgili Görüntü',
+        severity: 'Orta • Kabin İçi',
+        steps: [
+          'İlgili kabinin AC enerji fişini çekin ve mıknatıslı vakum aparatıyla modülü sökün.',
+          '5V DC güç kablosu ve 16-pin / 26-pin flat data kablosunun yerine tam oturduğunu kontrol edin.',
+          'Arızalı modülü yedek modülle değiştirin; renk farkı varsa ViPlex/NovaLCT üzerinden RCFGX dosyasını gönderin.'
+        ]
+      },
+      {
+        id: 'viplex-port',
+        title: '💻 ViPlex Express Bağlanmıyor / Port 16600 Hatası',
+        severity: 'Yazılım • Kontrol PC',
+        steps: [
+          'Windows Görev Yöneticisi üzerinden 16600 portunu meşgul eden arka plan işlemini sonlandırın.',
+          'TB60 Wi-Fi AP ağına (AP + Seri No Son 8 Hane) bağlanın veya doğrudan Ethernet kablosu takın.',
+          'Varsayılan kullanıcı adı admin ve şifre 123456 ile oturum açın.'
+        ]
+      },
+      {
+        id: 'sync-drift',
+        title: '🔄 Çoklu Ekran Senkronizasyon Kayması',
+        severity: 'Yayın • TB60 Ayarı',
+        steps: [
+          'Tüm TB60 oynatıcıların NTP (İnternet), RF veya GPS zaman senkronizasyonunun aktif olduğunu doğrulayın.',
+          'ViPlex Express > Control > Synchronous Playing seçeneğini tüm cihazlarda açın.',
+          'Oynatma listesindeki Random Transition (Rastgele Geçiş) efektini mutlaka kapatın.'
+        ]
+      }
+    ];
+
+    function renderScenarios() {
+      const container = document.getElementById('scenarios-container');
+      if (!container) return;
+      container.innerHTML = troubleshootingScenarios.map(sc => `
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="text-xs font-bold text-white">${sc.title}</h3>
+            <span class="shrink-0 px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-300 text-[10px] font-semibold">${sc.severity}</span>
+          </div>
+          <div class="space-y-1.5">
+            ${sc.steps.map((st, i) => `
+              <label class="flex items-start gap-2.5 p-2 rounded-xl bg-slate-950 border border-slate-800/80 cursor-pointer active:bg-slate-800/60">
+                <input type="checkbox" class="mt-0.5 rounded accent-emerald-500 w-4 h-4 shrink-0" />
+                <span class="text-xs text-slate-300">${i + 1}. ${st}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==================== 3. TB60 LED REHBERİ ====================
+    const ledInfoMap = {
+      PWR: {
+        title: 'PWR (Güç Göstergesi)',
+        lines: [
+          '• Sabit Kırmızı: TB60 anakartına 100-240V AC güç normal şekilde ulaşıyor.',
+          '• Sönük: Power&Controller Box sigortasını ve cihazın arka ON/OFF anahtarını kontrol edin.'
+        ]
+      },
+      SYS: {
+        title: 'SYS (Android İşletim Sistemi Göstergesi)',
+        lines: [
+          '• 2 sn aralıkla yanıp sönüyor: Sistem normal çalışıyor.',
+          '• 1 sn veya 0.5 sn hızlı yanıp sönüyor: Yazılım güncellemesi veya USB kopyalama sürüyor — CİHAZI KAPATMAYIN!',
+          '• Sabit yanıyor veya sönük: İşletim sistemi kilitlenmiş; 10 sn kapatıp yeniden başlatın.'
+        ]
+      },
+      CLOUD: {
+        title: 'CLOUD (VNNOX Bulut Bağlantısı)',
+        lines: [
+          '• Sabit Yanıyor: VNNOX bulut sunucusuna çevrimiçi bağlı ve aktif.',
+          '• 2 sn aralıkla yanıp sönüyor: İnternet var ancak VNNOX sunucu doğrulaması bekleniyor.',
+          '• Sönük: İnternet bağlantısı yok (yerel Wi-Fi AP veya Ethernet üzerinden kontrol edilebilir).'
+        ]
+      },
+      RUN: {
+        title: 'RUN (FPGA Görüntü Çıkış Göstergesi)',
+        lines: [
+          '• 0.5 sn aralıkla yanıp sönüyor: FPGA aktif, panellere veri gönderiliyor.',
+          '• 4 sn aralıkla yanıp sönüyor: Video sinyali yok! SWITCH modunu ve yayın durumunu kontrol edin.',
+          '• Sabit yanıyor veya sönük: FPGA donanım hatası; yeniden başlatma gerekir.'
+        ]
+      },
+      SWITCH: {
+        title: 'SWITCH (Senkron / Asenkron Mod Tuşu)',
+        lines: [
+          '• Yeşil Yanıyor: Senkron Mod (HDMI IN girişinden canlı maç/LEDVISION görüntüsü alır).',
+          '• Sönük: Asenkron Mod (TB60 dahili hafızasındaki sponsor döngülerini oynatır).'
+        ]
+      }
+    };
+
+    function selectLed(key) {
+      const info = ledInfoMap[key];
+      if (!info) return;
+      document.getElementById('led-detail-box').innerHTML = `
+        <div class="font-bold text-emerald-400">${info.title}</div>
+        ${info.lines.map(l => `<p class="text-slate-300">${l}</p>`).join('')}
+      `;
+    }
+
+    // ==================== 4. TBF BSL 2026-2027 FİKSTÜR VERİLERİ ====================
+    const defaultBslTeams2026 = [
+      { id: 1, name: 'Anadolu Efes', venue: 'Turkcell Basketbol Gelişim Merkezi / İstanbul', is7253: false, sahaNo: '' },
+      { id: 2, name: 'Fenerbahçe Tarfin', venue: 'Ülker Spor ve Etkinlik Salonu / İstanbul', is7253: false, sahaNo: '' },
+      { id: 3, name: 'Beşiktaş', venue: 'Turkcell Basketbol Gelişim Merkezi / İstanbul', is7253: false, sahaNo: '' },
+      { id: 4, name: 'Galatasaray MCT Technic', venue: 'Sinan Erdem Spor Salonu / İstanbul', is7253: true, sahaNo: 'Saha 1' },
+      { id: 5, name: 'Bahçeşehir Koleji', venue: 'Sinan Erdem Spor Salonu / İstanbul', is7253: true, sahaNo: 'Saha 1' },
+      { id: 6, name: 'Türk Telekom', venue: 'Ankara Spor Salonu / Ankara', is7253: true, sahaNo: 'Saha 3' },
+      { id: 7, name: 'Tofaş', venue: 'Tofaş Spor Salonu / Bursa', is7253: true, sahaNo: 'Saha 5' },
+      { id: 8, name: 'Karşıyaka', venue: 'Mustafa Kemal Atatürk Spor Salonu / İzmir-Karşıyaka', is7253: true, sahaNo: 'Saha 7' },
+      { id: 9, name: 'Aliağa Petkim Spor', venue: 'ENKA Spor Salonu / İzmir-Aliağa', is7253: true, sahaNo: 'Saha 6' },
+      { id: 10, name: 'Bursaspor Basketbol', venue: 'Tofaş Spor Salonu / Bursa', is7253: true, sahaNo: 'Saha 5' },
+      { id: 11, name: 'Yukatel Denizli Basket', venue: 'Pamukkale Üniversitesi Spor Salonu / Denizli', is7253: true, sahaNo: 'Saha 8' },
+      { id: 12, name: 'Trabzonspor', venue: 'Hayri Gür Spor Salonu / Trabzon', is7253: true, sahaNo: 'Saha 4' },
+      { id: 13, name: 'Esenler Erokspor', venue: 'Akatlar Spor Salonu / İstanbul', is7253: true, sahaNo: 'Saha 2' },
+      { id: 14, name: 'Biotekno Körfez Basket', venue: 'Şehit Polis Recep Topaloğlu Spor Salonu / Kocaeli', is7253: true, sahaNo: 'Saha 9' },
+      { id: 15, name: 'Glint Çayırova Belediyesi', venue: 'Çayırova Belediyesi Spor Kompleksi / Kocaeli', is7253: false, sahaNo: '' },
+      { id: 16, name: 'Pizzabulls Bordo Bandırma', venue: 'Bandırma Onyedi Eylül Üni. Spor Salonu / Balıkesir', is7253: false, sahaNo: '' }
+    ];
+
+    const LEAGUE_SETTINGS_KEY = 'tbf_7253_league_settings_v1';
+    const DEFAULT_LEAGUE_TITLE = 'TBF BSL 2026-2027';
+
+    function loadLeagueSettings() {
+      try {
+        const raw = localStorage.getItem(LEAGUE_SETTINGS_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            return {
+              leagueTitle: (typeof parsed.leagueTitle === 'string' && parsed.leagueTitle.trim())
+                ? parsed.leagueTitle.trim()
+                : DEFAULT_LEAGUE_TITLE,
+              teams: (parsed.teams && typeof parsed.teams === 'object') ? parsed.teams : {}
+            };
+          }
+        }
+      } catch (e) {}
+      return { leagueTitle: DEFAULT_LEAGUE_TITLE, teams: {} };
+    }
+
+    function saveLeagueSettingsData(settingsObj) {
+      try {
+        localStorage.setItem(LEAGUE_SETTINGS_KEY, JSON.stringify(settingsObj));
+      } catch (e) {}
+      if (typeof window.pushSharedCloudState === 'function') {
+        window.pushSharedCloudState();
+      }
+    }
+
+    const bslTeams2026 = defaultBslTeams2026.map(t => ({ ...t }));
+    const teamLookup = Object.fromEntries(bslTeams2026.map(t => [t.id, t]));
+
+    function applyLeagueAndTeamsSettings() {
+      const settings = loadLeagueSettings();
+      const title = settings.leagueTitle || DEFAULT_LEAGUE_TITLE;
+
+      const fixHead = document.getElementById('fixtures-league-heading');
+      if (fixHead) {
+        fixHead.textContent = `${title} Fikstür & Maç Sonuçları`;
+      }
+      const standHead = document.getElementById('standings-league-heading');
+      if (standHead) {
+        standHead.textContent = `${title} Puan Durumu`;
+      }
+
+      defaultBslTeams2026.forEach((defTeam, idx) => {
+        const ov = settings.teams[defTeam.id] || settings.teams[String(defTeam.id)];
+        const target = bslTeams2026[idx];
+        target.name = (ov && typeof ov.name === 'string' && ov.name.trim()) ? ov.name.trim() : defTeam.name;
+        target.venue = (ov && typeof ov.venue === 'string' && ov.venue.trim()) ? ov.venue.trim() : defTeam.venue;
+        target.is7253 = (ov && typeof ov.is7253 === 'boolean') ? ov.is7253 : defTeam.is7253;
+        target.sahaNo = (ov && typeof ov.sahaNo === 'string') ? ov.sahaNo.trim() : defTeam.sahaNo;
+        teamLookup[target.id] = target;
+      });
+
+      if (typeof allFixtures !== 'undefined' && Array.isArray(allFixtures)) {
+        allFixtures.forEach(m => {
+          const homeTeam = teamLookup[m.homeId];
+          const awayTeam = teamLookup[m.awayId];
+          if (homeTeam) {
+            m.home = homeTeam.name;
+            m.venue = homeTeam.venue;
+            m.is7253 = homeTeam.is7253;
+            m.sahaNo = homeTeam.sahaNo;
+          }
+          if (awayTeam) {
+            m.away = awayTeam.name;
+          }
+        });
+      }
+    }
+
+    const officialFirstHalfPairings = [
+      [[7,16], [6,8], [9,11], [4,15], [12,10], [5,2], [1,3], [14,13]],
+      [[8,4], [11,7], [10,6], [13,9], [15,5], [2,14], [16,1], [3,12]],
+      [[5,8], [9,14], [7,13], [15,2], [12,16], [1,11], [6,3], [4,10]],
+      [[8,15], [16,6], [10,5], [14,7], [11,12], [2,9], [3,4], [13,1]],
+      [[15,10], [12,13], [6,11], [5,3], [1,14], [8,2], [7,9], [4,16]],
+      [[14,12], [16,5], [11,4], [13,6], [2,7], [10,8], [9,1], [3,15]],
+      [[15,16], [6,14], [12,9], [10,2], [5,11], [1,7], [4,13], [8,3]],
+      [[9,6], [7,12], [14,4], [16,8], [13,5], [11,15], [3,10], [2,1]],
+      [[10,16], [5,14], [12,1], [4,9], [15,13], [3,2], [8,11], [6,7]],
+      [[11,10], [14,15], [1,6], [16,3], [7,4], [13,8], [9,5], [2,12]],
+      [[3,11], [10,13], [15,9], [16,2], [4,1], [5,7], [8,14], [6,12]],
+      [[14,10], [11,16], [13,3], [1,5], [12,4], [9,8], [7,15], [2,6]],
+      [[8,7], [10,9], [16,13], [15,1], [11,2], [5,12], [4,6], [3,14]],
+      [[1,8], [13,11], [12,15], [14,16], [9,3], [7,10], [6,5], [2,4]],
+      [[16,9], [11,14], [10,1], [15,6], [3,7], [5,4], [8,12], [13,2]]
+    ];
+
+    const exactScheduleByWeek = {
+      1: [
+        { date: '25 Eylül 2026 Cuma', time: '19:00' },
+        { date: '26 Eylül 2026 Cumartesi', time: '13:00' },
+        { date: '26 Eylül 2026 Cumartesi', time: '15:30' },
+        { date: '26 Eylül 2026 Cumartesi', time: '18:00' },
+        { date: '27 Eylül 2026 Pazar', time: '15:30' },
+        { date: '27 Eylül 2026 Pazar', time: '18:00' },
+        { date: '27 Eylül 2026 Pazar', time: '20:30' },
+        { date: '28 Eylül 2026 Pazartesi', time: '19:00' }
+      ],
+      2: [
+        { date: '2 Ekim 2026 Cuma', time: '19:00' },
+        { date: '3 Ekim 2026 Cumartesi', time: '13:00' },
+        { date: '3 Ekim 2026 Cumartesi', time: '15:30' },
+        { date: '3 Ekim 2026 Cumartesi', time: '18:00' },
+        { date: '4 Ekim 2026 Pazar', time: '13:00' },
+        { date: '4 Ekim 2026 Pazar', time: '15:30' },
+        { date: '4 Ekim 2026 Pazar', time: '18:00' },
+        { date: '5 Ekim 2026 Pazartesi', time: '19:00' }
+      ],
+      3: [
+        { date: '10 Ekim 2026 Cumartesi', time: '13:00' },
+        { date: '10 Ekim 2026 Cumartesi', time: '15:30' },
+        { date: '10 Ekim 2026 Cumartesi', time: '18:00' },
+        { date: '10 Ekim 2026 Cumartesi', time: '20:30' },
+        { date: '11 Ekim 2026 Pazar', time: '13:00' },
+        { date: '11 Ekim 2026 Pazar', time: '15:30' },
+        { date: '11 Ekim 2026 Pazar', time: '18:00' },
+        { date: '12 Ekim 2026 Pazartesi', time: '19:00' }
+      ],
+      4: [
+        { date: '16 Ekim 2026 Cuma', time: '19:00' },
+        { date: '17 Ekim 2026 Cumartesi', time: '13:00' },
+        { date: '17 Ekim 2026 Cumartesi', time: '15:30' },
+        { date: '17 Ekim 2026 Cumartesi', time: '18:00' },
+        { date: '18 Ekim 2026 Pazar', time: '13:00' },
+        { date: '18 Ekim 2026 Pazar', time: '15:30' },
+        { date: '18 Ekim 2026 Pazar', time: '20:30' },
+        { date: '19 Ekim 2026 Pazartesi', time: '19:00' }
+      ],
+      5: [
+        { date: '23 Ekim 2026 Cuma', time: '19:00' },
+        { date: '24 Ekim 2026 Cumartesi', time: '13:00' },
+        { date: '24 Ekim 2026 Cumartesi', time: '15:30' },
+        { date: '24 Ekim 2026 Cumartesi', time: '20:30' },
+        { date: '25 Ekim 2026 Pazar', time: '13:00' },
+        { date: '25 Ekim 2026 Pazar', time: '15:30' },
+        { date: '25 Ekim 2026 Pazar', time: '18:00' },
+        { date: '25 Ekim 2026 Pazar', time: '20:30' }
+      ],
+      6: [
+        { date: '31 Ekim 2026 Cumartesi', time: '15:30' },
+        { date: '31 Ekim 2026 Cumartesi', time: '18:00' },
+        { date: '31 Ekim 2026 Cumartesi', time: '20:30' },
+        { date: '1 Kasım 2026 Pazar', time: '13:00' },
+        { date: '1 Kasım 2026 Pazar', time: '15:30' },
+        { date: '1 Kasım 2026 Pazar', time: '18:00' },
+        { date: '2 Kasım 2026 Pazartesi', time: '18:00' },
+        { date: '2 Kasım 2026 Pazartesi', time: '20:30' }
+      ],
+      7: [
+        { date: '7 Kasım 2026 Cumartesi', time: '13:00' },
+        { date: '7 Kasım 2026 Cumartesi', time: '15:30' },
+        { date: '7 Kasım 2026 Cumartesi', time: '18:00' },
+        { date: '7 Kasım 2026 Cumartesi', time: '20:30' },
+        { date: '8 Kasım 2026 Pazar', time: '13:00' },
+        { date: '8 Kasım 2026 Pazar', time: '15:30' },
+        { date: '8 Kasım 2026 Pazar', time: '18:00' },
+        { date: '9 Kasım 2026 Pazartesi', time: '19:00' }
+      ],
+      8: [
+        { date: '14 Kasım 2026 Cumartesi', time: '13:00' },
+        { date: '14 Kasım 2026 Cumartesi', time: '15:30' },
+        { date: '14 Kasım 2026 Cumartesi', time: '18:00' },
+        { date: '14 Kasım 2026 Cumartesi', time: '20:30' },
+        { date: '15 Kasım 2026 Pazar', time: '13:00' },
+        { date: '15 Kasım 2026 Pazar', time: '15:30' },
+        { date: '15 Kasım 2026 Pazar', time: '18:00' },
+        { date: '15 Kasım 2026 Pazar', time: '20:30' }
+      ]
+    };
+
+    const weekStartDates2026 = [
+      new Date(2026, 8, 26), new Date(2026, 9, 3), new Date(2026, 9, 10), new Date(2026, 9, 17),
+      new Date(2026, 9, 24), new Date(2026, 9, 31), new Date(2026, 10, 7), new Date(2026, 10, 14),
+      new Date(2026, 10, 21), new Date(2026, 11, 5), new Date(2026, 11, 12), new Date(2026, 11, 19),
+      new Date(2026, 11, 26), new Date(2027, 0, 2), new Date(2027, 0, 9), new Date(2027, 0, 16),
+      new Date(2027, 0, 23), new Date(2027, 0, 30), new Date(2027, 1, 6), new Date(2027, 1, 13),
+      new Date(2027, 2, 6), new Date(2027, 2, 13), new Date(2027, 2, 20), new Date(2027, 2, 27),
+      new Date(2027, 3, 3), new Date(2027, 3, 10), new Date(2027, 3, 17), new Date(2027, 3, 24),
+      new Date(2027, 4, 1), new Date(2027, 4, 8)
+    ];
+
+    const trMonths = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+    const trDaysOfWeek = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+    const defaultWeekendSlots = [
+      { dayOffset: 0, dayName: 'Cumartesi', time: '13:00' },
+      { dayOffset: 0, dayName: 'Cumartesi', time: '15:30' },
+      { dayOffset: 0, dayName: 'Cumartesi', time: '18:00' },
+      { dayOffset: 0, dayName: 'Cumartesi', time: '20:30' },
+      { dayOffset: 1, dayName: 'Pazar', time: '13:00' },
+      { dayOffset: 1, dayName: 'Pazar', time: '15:30' },
+      { dayOffset: 1, dayName: 'Pazar', time: '18:00' },
+      { dayOffset: 1, dayName: 'Pazar', time: '20:30' }
+    ];
+
+    function buildFull30WeekFixtures() {
+      const generated = [];
+
+      for (let w = 1; w <= 30; w++) {
+        const isSecondHalf = w > 15;
+        const basePairs = officialFirstHalfPairings[(w - 1) % 15];
+        const satDate = weekStartDates2026[w - 1];
+        const exactWeekSlots = exactScheduleByWeek[w];
+        const status = w < 8 ? 'Tamamlandı' : (w === 8 ? 'Bu Hafta' : 'TBF Takvim');
+
+        basePairs.forEach((pair, idx) => {
+          const homeId = isSecondHalf ? pair[1] : pair[0];
+          const awayId = isSecondHalf ? pair[0] : pair[1];
+          const homeTeam = teamLookup[homeId];
+          const awayTeam = teamLookup[awayId];
+
+          let dateLabel = '';
+          let timeLabel = '';
+
+          if (exactWeekSlots && exactWeekSlots[idx]) {
+            dateLabel = exactWeekSlots[idx].date;
+            timeLabel = exactWeekSlots[idx].time;
+          } else {
+            const slot = defaultWeekendSlots[idx];
+            const d = new Date(satDate.getFullYear(), satDate.getMonth(), satDate.getDate() + slot.dayOffset);
+            dateLabel = `${d.getDate()} ${trMonths[d.getMonth()]} ${d.getFullYear()} ${slot.dayName}`;
+            timeLabel = `${slot.time} (TBF Planı)`;
+          }
+
+          generated.push({
+            id: w * 100 + (idx + 1),
+            weekNum: w,
+            week: `${w}. Hafta`,
+            homeId,
+            awayId,
+            defaultDate: dateLabel,
+            defaultTime: timeLabel,
+            date: dateLabel,
+            time: timeLabel,
+            home: homeTeam.name,
+            away: awayTeam.name,
+            venue: homeTeam.venue,
+            is7253: homeTeam.is7253,
+            sahaNo: homeTeam.sahaNo,
+            status
+          });
+        });
+      }
+      return generated;
+    }
+
+    const allFixtures = buildFull30WeekFixtures();
+    applyLeagueAndTeamsSettings();
+    const FIXTURE_OVERRIDES_KEY = 'tbf_7253_fixture_overrides_v11';
+    let only7253Filter = false;
+
+    const officialTbfCompletedScores = {
+      101: '90-89', 102: '73-72', 103: '85-81', 104: '102-79',
+      105: '82-76', 106: '98-83', 107: '95-81', 108: '88-79',
+      201: '78-71', 202: '101-87', 203: '69-78', 204: '96-87',
+      205: '76-84', 206: '85-84', 207: '79-85', 208: '90-81',
+      301: '92-82', 302: '90-91', 303: '79-87', 304: '85-100',
+      305: '83-80', 306: '85-76', 307: '88-63', 308: '88-93',
+      401: '95-79', 402: '79-66', 403: '80-90', 404: '69-71',
+      405: '70-75', 406: '77-82', 407: '83-80', 408: '73-70',
+      501: '83-64', 502: '90-93', 503: '97-76', 504: '100-96',
+      505: '93-77', 506: '72-97', 507: '72-74', 508: '102-68',
+      601: '83-89', 602: '103-88', 603: '74-87', 604: '71-89',
+      605: '88-77', 606: '83-86', 607: '77-87', 608: '93-76',
+      701: '95-78', 702: '94-82', 703: '81-91', 704: '59-78',
+      705: '97-86', 706: '87-93', 707: '90-81', 708: '84-83',
+      801: '88-84'
+    };
+
+    allFixtures.forEach(m => {
+      const doneScore = officialTbfCompletedScores[m.id] || '';
+      m.score = doneScore;
+      m.matchState = doneScore ? 'MS' : (m.weekNum === 8 ? 'PROGRAM' : 'TAKVİM');
+      m.periodInfo = doneScore ? 'Maç Sonucu' : '';
+    });
+
+    function getFixtureOverrides() {
+      try {
+        ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10'].forEach(v =>
+          localStorage.removeItem(`tbf_7253_fixture_overrides_${v}`)
+        );
+        const raw = localStorage.getItem(FIXTURE_OVERRIDES_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') return parsed;
+        }
+      } catch (e) {}
+      return {};
+    }
+
+    function saveFixtureOverrides(overrides) {
+      try {
+        localStorage.setItem(FIXTURE_OVERRIDES_KEY, JSON.stringify(overrides));
+      } catch (e) {}
+      if (typeof window.pushSharedCloudState === 'function') {
+        window.pushSharedCloudState();
+      }
+    }
+
+    function applyFixtureOverrides() {
+      const overrides = getFixtureOverrides();
+      allFixtures.forEach(m => {
+        const baseScore = officialTbfCompletedScores[m.id] || '';
+        const hasOverride = Object.prototype.hasOwnProperty.call(overrides, m.id);
+        const ov = overrides[m.id];
+
+        m.date = m.weekNum >= 13 ? `${m.weekNum}. Hafta (Tarih Belirsiz)` : m.defaultDate;
+        m.time = m.weekNum >= 13 ? 'Saat Belirsiz' : m.defaultTime;
+
+        if (hasOverride && ov && typeof ov === 'object') {
+          if (typeof ov.customDate === 'string' && ov.customDate.trim() !== '') {
+            m.date = ov.customDate.trim();
+          }
+          if (typeof ov.customTime === 'string' && ov.customTime.trim() !== '') {
+            m.time = ov.customTime.trim();
+          }
+
+          if (typeof ov.score === 'string' && /^\d{1,3}\s*-\s*\d{1,3}$/.test(ov.score.trim())) {
+            m.score = ov.score.replace(/\s+/g, '');
+            m.matchState = 'MS';
+            m.periodInfo = 'Maç Sonucu';
+            m.status = 'Tamamlandı';
+            m.isTentative = false;
+          } else {
+            m.score = '';
+            m.matchState = m.weekNum === 8 ? 'PROGRAM' : 'TAKVİM';
+            m.periodInfo = '';
+            m.status = (ov.customTime || ov.customDate)
+              ? 'Saat Güncellendi'
+              : (m.weekNum < 8 ? 'Program' : (m.weekNum === 8 ? 'Bu Hafta' : (m.weekNum >= 13 ? 'TBF Belirsiz' : 'TBF Takvim')));
+            m.isTentative = m.weekNum >= 13 && !ov.customDate && !ov.customTime;
+          }
+          return;
+        }
+
+        if (baseScore) {
+          m.score = baseScore;
+          m.matchState = 'MS';
+          m.periodInfo = 'Maç Sonucu';
+          m.isTentative = false;
+          m.status = 'Tamamlandı';
+          return;
+        }
+
+        m.score = '';
+        m.matchState = m.weekNum === 8 ? 'PROGRAM' : 'TAKVİM';
+        m.periodInfo = '';
+        m.isTentative = m.weekNum >= 13;
+        if (m.weekNum >= 13) {
+          m.status = 'TBF Belirsiz';
+        }
+      });
+    }
+
+    function initFixtureWeeks() {
+      const select = document.getElementById('week-select');
+      if (!select) return;
+      const currentVal = select.value || '8. Hafta';
+      const title = loadLeagueSettings().leagueTitle || DEFAULT_LEAGUE_TITLE;
+      const weeks = [...new Set(allFixtures.map(f => f.week))];
+      select.innerHTML = weeks.map(w => `<option value="${w}" ${w === currentVal ? 'selected' : ''}>${w} (${escapeHtml(title)})</option>`).join('');
+    }
+
+    function openLeagueSettingsModal() {
+      const settings = loadLeagueSettings();
+      const titleInput = document.getElementById('settings-league-title');
+      if (titleInput) {
+        titleInput.value = settings.leagueTitle || DEFAULT_LEAGUE_TITLE;
+      }
+
+      const listEl = document.getElementById('settings-teams-list');
+      if (listEl) {
+        const sahaOptions = ['', 'Saha 1', 'Saha 2', 'Saha 3', 'Saha 4', 'Saha 5', 'Saha 6', 'Saha 7', 'Saha 8', 'Saha 9'];
+        listEl.innerHTML = bslTeams2026.map(t => `
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 space-y-2" data-team-row="${t.id}">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 text-[10px] font-extrabold">#${t.id}</span>
+              <div class="flex items-center gap-2">
+                <label class="flex items-center gap-1.5 text-[11px] font-bold text-amber-300 cursor-pointer select-none">
+                  <input type="checkbox" data-team-is7253="${t.id}" ${t.is7253 ? 'checked' : ''} class="w-3.5 h-3.5 rounded accent-amber-500" />
+                  <span>#7253 Proje</span>
+                </label>
+                <select data-team-saha="${t.id}" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-[11px] font-semibold text-slate-200 focus:outline-none focus:border-amber-500">
+                  ${sahaOptions.map(s => `<option value="${s}" ${t.sahaNo === s ? 'selected' : ''}>${s || 'Salon Seç'}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-0.5">Takım Adı</label>
+                <input type="text" data-team-name="${t.id}" value="${escapeHtml(t.name)}"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-500" />
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-0.5">Salon / Şehir</label>
+                <input type="text" data-team-venue="${t.id}" value="${escapeHtml(t.venue)}"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500" />
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const modal = document.getElementById('league-settings-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeLeagueSettingsModal() {
+      const modal = document.getElementById('league-settings-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveLeagueSettings() {
+      const titleInput = document.getElementById('settings-league-title');
+      const newTitle = (titleInput && titleInput.value.trim()) ? titleInput.value.trim() : DEFAULT_LEAGUE_TITLE;
+
+      const teamsMap = {};
+      bslTeams2026.forEach(t => {
+        const nameEl = document.querySelector(`[data-team-name="${t.id}"]`);
+        const venueEl = document.querySelector(`[data-team-venue="${t.id}"]`);
+        const is7253El = document.querySelector(`[data-team-is7253="${t.id}"]`);
+        const sahaEl = document.querySelector(`[data-team-saha="${t.id}"]`);
+
+        teamsMap[t.id] = {
+          name: (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : t.name,
+          venue: (venueEl && venueEl.value.trim()) ? venueEl.value.trim() : t.venue,
+          is7253: is7253El ? Boolean(is7253El.checked) : t.is7253,
+          sahaNo: sahaEl ? sahaEl.value.trim() : t.sahaNo
+        };
+      });
+
+      saveLeagueSettingsData({
+        leagueTitle: newTitle,
+        teams: teamsMap
+      });
+
+      applyLeagueAndTeamsSettings();
+      applyFixtureOverrides();
+      initFixtureWeeks();
+      renderFixtures();
+      renderStandings();
+      closeLeagueSettingsModal();
+    }
+
+    function resetLeagueSettingsToDefault() {
+      saveLeagueSettingsData({
+        leagueTitle: DEFAULT_LEAGUE_TITLE,
+        teams: {}
+      });
+      applyLeagueAndTeamsSettings();
+      applyFixtureOverrides();
+      initFixtureWeeks();
+      renderFixtures();
+      renderStandings();
+      openLeagueSettingsModal();
+    }
+
+    function handleFixtureWeekChange() {
+      renderFixtures();
+      syncFixturesFromTBF(false);
+    }
+
+    let isTbfSyncInFlight = false;
+
+    async function syncFixturesFromTBF(isManual = false) {
+      if (isTbfSyncInFlight && !isManual) return;
+      isTbfSyncInFlight = true;
+
+      const btn = document.getElementById('btn-sync-tbf');
+      const statusEl = document.getElementById('fixture-sync-status');
+
+      try {
+        applyFixtureOverrides();
+        renderFixtures();
+        renderStandings();
+
+        const nowStr = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+        if (statusEl) {
+          statusEl.innerHTML = `✓ Yerel hafıza &amp; Puan Durumu eşitlendi (${nowStr}) • API/CORS engeli yok • <a href="https://tbf.org.tr/ligler/bsl/maclar" target="_blank" rel="noopener noreferrer" onclick="toggleTbfLiveEmbed(event)" class="underline text-amber-300 font-bold">TBF Maçlar ↗</a>`;
+          statusEl.className = 'text-[11px] text-emerald-400 truncate';
+        }
+      } finally {
+        isTbfSyncInFlight = false;
+        if (btn && isManual) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>🔄</span><span>Tabloyu Eşitle</span>';
+        }
+      }
+    }
+
+    function toggleTbfLiveEmbed(event) {
+      if (event) event.preventDefault();
+      window.open('https://tbf.org.tr/ligler/bsl/maclar', '_blank', 'noopener,noreferrer');
+    }
+
+    let editingScoreMatchId = null;
+
+    function parseTrDateToIso(rawDate) {
+      const str = String(rawDate || '').trim();
+      const trMatch = str.match(/(\d{1,2})\s+([A-Za-zÇĞİÖŞÜçğıöşü]+)\s+(\d{4})/);
+      if (trMatch) {
+        const d = parseInt(trMatch[1], 10);
+        const mIdx = trMonths.findIndex(m => m.toLocaleLowerCase('tr-TR') === trMatch[2].toLocaleLowerCase('tr-TR'));
+        const y = parseInt(trMatch[3], 10);
+        if (mIdx !== -1 && !Number.isNaN(d) && !Number.isNaN(y)) {
+          return `${y}-${String(mIdx + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        }
+      }
+      const dotMatch = str.match(/(\d{1,2})[./-](\d{1,2})[./-](\d{4})/);
+      if (dotMatch) {
+        const d = parseInt(dotMatch[1], 10);
+        const m = parseInt(dotMatch[2], 10);
+        const y = parseInt(dotMatch[3], 10);
+        return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      }
+      return '';
+    }
+
+    function formatIsoToTrDate(isoStr) {
+      if (!isoStr || !/^\d{4}-\d{2}-\d{2}$/.test(isoStr)) return '';
+      const [y, m, d] = isoStr.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      if (Number.isNaN(dt.getTime())) return '';
+      const dayName = trDaysOfWeek[dt.getDay()];
+      return `${d} ${trMonths[m - 1]} ${y} ${dayName}`;
+    }
+
+    function applyQuickDateFromPicker(isoVal) {
+      const formatted = formatIsoToTrDate(isoVal);
+      const textInput = document.getElementById('qs-match-date');
+      if (formatted && textInput) {
+        textInput.value = formatted;
+      }
+    }
+
+    function setQuickMatchTime(timeStr) {
+      const timeInput = document.getElementById('qs-match-time');
+      if (timeInput) timeInput.value = timeStr;
+    }
+
+    function formatQuickMatchTimeInput() {
+      const timeInput = document.getElementById('qs-match-time');
+      if (!timeInput) return;
+      const formatted = normalizeSmartTimeInput(timeInput.value);
+      if (formatted) {
+        timeInput.value = formatted;
+      }
+    }
+
+    function openQuickScoreModal(matchId) {
+      const m = allFixtures.find(x => x.id === matchId);
+      if (!m) return;
+      editingScoreMatchId = matchId;
+      document.getElementById('qs-match-title').textContent = `${m.home} vs ${m.away} (${m.week})`;
+      const dateStr = m.date || '';
+      document.getElementById('qs-match-date').value = dateStr;
+      const picker = document.getElementById('qs-match-date-picker');
+      if (picker) {
+        picker.value = parseTrDateToIso(dateStr) || '2026-11-15';
+      }
+      const cleanTime = (m.time || '').replace(/\s*\(TBF Planı\)/i, '').trim();
+      document.getElementById('qs-match-time').value = cleanTime === 'Saat Belirsiz' ? '' : cleanTime;
+      document.getElementById('qs-home-label').textContent = m.home;
+      document.getElementById('qs-away-label').textContent = m.away;
+      const parts = (m.score || '').split('-');
+      document.getElementById('qs-home-score').value = parts[0] ? parts[0].trim() : '';
+      document.getElementById('qs-away-score').value = parts[1] ? parts[1].trim() : '';
+      document.getElementById('quick-score-modal').classList.remove('hidden');
+    }
+
+    function closeQuickScoreModal() {
+      editingScoreMatchId = null;
+      document.getElementById('quick-score-modal').classList.add('hidden');
+    }
+
+    function saveQuickScore() {
+      if (!editingScoreMatchId) return;
+      const dateInput = document.getElementById('qs-match-date').value.trim();
+      const rawTimeInput = document.getElementById('qs-match-time').value.trim();
+      const smartTime = normalizeSmartTimeInput(rawTimeInput) || rawTimeInput;
+      const h = document.getElementById('qs-home-score').value.trim();
+      const a = document.getElementById('qs-away-score').value.trim();
+
+      const hasScore = h !== '' && a !== '';
+      const scoreVal = hasScore ? `${Number(h)}-${Number(a)}` : '';
+
+      const overrides = getFixtureOverrides();
+      overrides[editingScoreMatchId] = {
+        customDate: dateInput,
+        customTime: smartTime,
+        score: scoreVal,
+        matchState: hasScore ? 'MS' : 'PROGRAM',
+        periodInfo: hasScore ? 'Maç Sonucu' : ''
+      };
+      saveFixtureOverrides(overrides);
+      applyFixtureOverrides();
+      renderFixtures();
+      renderStandings();
+      closeQuickScoreModal();
+    }
+
+    function clearQuickScore() {
+      if (!editingScoreMatchId) return;
+      const overrides = getFixtureOverrides();
+      delete overrides[editingScoreMatchId];
+      saveFixtureOverrides(overrides);
+      applyFixtureOverrides();
+      renderFixtures();
+      renderStandings();
+      closeQuickScoreModal();
+    }
+
+    function toggleOnly7253() {
+      only7253Filter = !only7253Filter;
+      const btn = document.getElementById('btn-only-7253');
+      if (btn) {
+        btn.className = only7253Filter
+          ? 'px-3 py-2 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs transition'
+          : 'px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300 transition';
+      }
+      renderFixtures();
+    }
+
+    function renderFixtures() {
+      const select = document.getElementById('week-select');
+      const list = document.getElementById('fixtures-list');
+      if (!select || !list) return;
+
+      const selectedWeek = select.value || '8. Hafta';
+      const filtered = allFixtures
+        .filter(f => f.week === selectedWeek && (!only7253Filter || f.is7253))
+        .sort((a, b) => {
+          const tsA = getFixtureChronologicalTimestamp(a);
+          const tsB = getFixtureChronologicalTimestamp(b);
+          if (tsA !== tsB) return tsA - tsB;
+          return a.id - b.id;
+        });
+
+      list.innerHTML = filtered.map(m => {
+        const isDone = m.matchState === 'MS' && m.score;
+        const stateBadge = isDone
+          ? `<span class="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold">MS • Maç Sonucu</span>`
+          : `<span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 text-[10px] font-semibold">${m.status}</span>`;
+
+        const centerScoreBlock = isDone
+          ? `<button type="button" onclick="openQuickScoreModal(${m.id})" class="px-2.5 py-0.5 rounded-lg bg-slate-800 border border-slate-700 text-amber-300 font-extrabold text-sm tracking-wide active:scale-95 transition">${m.score}</button>`
+          : `<button type="button" onclick="openQuickScoreModal(${m.id})" class="text-amber-400 hover:text-amber-300 font-extrabold text-xs px-2 py-0.5 rounded-md bg-slate-950 border border-slate-800 active:scale-95 transition">VS</button>`;
+
+        return `
+          <div class="bg-slate-900 border ${m.is7253 ? 'border-amber-500/35' : 'border-slate-800'} rounded-2xl p-3 space-y-2">
+            <div class="flex items-center justify-between gap-2 text-[11px]">
+              <button type="button" onclick="openQuickScoreModal(${m.id})" class="text-left text-slate-400 hover:text-amber-300 font-medium transition active:scale-95" title="Maç tarihini ve saatini düzenlemek için dokunun">
+                ${m.date} • <b class="text-white underline decoration-amber-500/60 underline-offset-2">${m.time}</b>
+              </button>
+              <div class="flex items-center gap-1.5">
+                ${stateBadge}
+                ${m.is7253
+                  ? `<span class="px-2 py-0.5 rounded-md bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-[10px]">#7253 • ${m.sahaNo}</span>`
+                  : `<span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 text-[10px]">Diğer Salon</span>`}
+              </div>
+            </div>
+            <div class="flex items-center justify-between gap-2 py-0.5">
+              <span class="text-xs font-bold text-white flex-1">${m.home}</span>
+              ${centerScoreBlock}
+              <span class="text-xs font-bold text-white flex-1 text-right">${m.away}</span>
+            </div>
+            <div class="text-[11px] text-slate-400 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1 min-w-0">
+                <span>📍</span>
+                <span class="truncate">${m.venue}</span>
+              </div>
+              <button type="button" onclick="openQuickScoreModal(${m.id})" class="shrink-0 text-[10px] font-semibold text-slate-400 hover:text-amber-300 underline">
+                Saat / Skor Gir
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==================== 6. YARDIMCI FONKSİYONLAR ====================
+    function getFixtureChronologicalTimestamp(match) {
+      const rawDate = String(match.date || '').trim();
+      const rawTime = String(match.time || '').trim();
+
+      let year = 2026;
+      let monthIndex = 11;
+      let day = 31;
+      let hasValidDate = false;
+
+      const trDateMatch = rawDate.match(/(\d{1,2})\s+([A-Za-zÇĞİÖŞÜçğıöşü]+)\s+(\d{4})/);
+      if (trDateMatch) {
+        day = parseInt(trDateMatch[1], 10);
+        const monthName = trDateMatch[2].toLocaleLowerCase('tr-TR');
+        const foundMonth = trMonths.findIndex(m => m.toLocaleLowerCase('tr-TR') === monthName);
+        if (foundMonth !== -1) {
+          monthIndex = foundMonth;
+          year = parseInt(trDateMatch[3], 10);
+          hasValidDate = true;
+        }
+      } else {
+        const dotDateMatch = rawDate.match(/(\d{1,2})[./-](\d{1,2})[./-](\d{4})/);
+        if (dotDateMatch) {
+          day = parseInt(dotDateMatch[1], 10);
+          monthIndex = parseInt(dotDateMatch[2], 10) - 1;
+          year = parseInt(dotDateMatch[3], 10);
+          hasValidDate = true;
+        }
+      }
+
+      let hours = 23;
+      let minutes = 59;
+      const timeMatch = rawTime.match(/(\d{1,2}):(\d{2})/);
+      if (timeMatch) {
+        hours = parseInt(timeMatch[1], 10);
+        minutes = parseInt(timeMatch[2], 10);
+      } else if (/saat\s*belirsiz/i.test(rawTime)) {
+        hours = 23;
+        minutes = 58;
+      }
+
+      if (!hasValidDate) {
+        return new Date(2099, 0, 1, hours, minutes, 0, 0).getTime();
+      }
+
+      return new Date(year, monthIndex, day, hours, minutes, 0, 0).getTime();
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ==================== 7. PUAN DURUMU (FİKSTÜR SKORLARINDAN OTOMATİK HESAPLAMA) ====================
+    function calculateStandingsFromFixtures() {
+      const statsMap = {};
+      bslTeams2026.forEach(t => {
+        statsMap[t.name] = {
+          team: t.name,
+          is7253: t.is7253,
+          sahaNo: t.sahaNo,
+          played: 0,
+          won: 0,
+          lost: 0,
+          pf: 0,
+          pa: 0,
+          diff: 0,
+          pts: 0
+        };
+      });
+
+      allFixtures.forEach(m => {
+        if (!m.score || !m.score.includes('-')) return;
+        const parts = m.score.split('-').map(s => Number(s.trim()));
+        if (parts.length !== 2 || Number.isNaN(parts[0]) || Number.isNaN(parts[1])) return;
+        const [hs, as] = parts;
+        const homeObj = statsMap[m.home];
+        const awayObj = statsMap[m.away];
+        if (!homeObj || !awayObj) return;
+
+        homeObj.played += 1;
+        awayObj.played += 1;
+        homeObj.pf += hs;
+        homeObj.pa += as;
+        awayObj.pf += as;
+        awayObj.pa += hs;
+
+        if (hs > as) {
+          homeObj.won += 1;
+          homeObj.pts += 2;
+          awayObj.lost += 1;
+          awayObj.pts += 1;
+        } else if (as > hs) {
+          awayObj.won += 1;
+          awayObj.pts += 2;
+          homeObj.lost += 1;
+          homeObj.pts += 1;
+        }
+      });
+
+      return Object.values(statsMap)
+        .map(row => ({ ...row, diff: row.pf - row.pa }))
+        .sort((a, b) => {
+          if (b.pts !== a.pts) return b.pts - a.pts;
+          if (b.diff !== a.diff) return b.diff - a.diff;
+          return b.pf - a.pf;
+        });
+    }
+
+    function renderStandings() {
+      const tbody = document.getElementById('standings-table-body');
+      const statusEl = document.getElementById('standings-sync-status');
+      if (!tbody) return;
+
+      const rows = calculateStandingsFromFixtures();
+      tbody.innerHTML = rows.map((r, idx) => {
+        const rank = idx + 1;
+        const rankBadge = rank <= 8
+          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+          : (rank >= 15 ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-slate-800 text-slate-300');
+        const diffSign = r.diff > 0 ? `+${r.diff}` : `${r.diff}`;
+        const diffColor = r.diff > 0 ? 'text-emerald-400' : (r.diff < 0 ? 'text-rose-400' : 'text-slate-400');
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="py-2.5 pl-3 pr-1.5">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded-md text-[10px] font-extrabold ${rankBadge}">${rank}</span>
+            </td>
+            <td class="py-2.5 px-1.5 font-bold text-white">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="truncate">${escapeHtml(r.team)}</span>
+                ${r.is7253 ? `<span class="px-1.5 py-0.2 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[9px] font-extrabold">#7253</span>` : ''}
+              </div>
+            </td>
+            <td class="py-2.5 px-1.5 text-center font-semibold text-slate-300">${r.played}</td>
+            <td class="py-2.5 px-1.5 text-center font-bold text-emerald-400">${r.won}</td>
+            <td class="py-2.5 px-1.5 text-center font-bold text-rose-400">${r.lost}</td>
+            <td class="py-2.5 px-1.5 text-center text-[11px] text-slate-400 hidden sm:table-cell">${r.pf}-${r.pa}</td>
+            <td class="py-2.5 px-1.5 text-center font-semibold ${diffColor}">${diffSign}</td>
+            <td class="py-2.5 pl-1.5 pr-3 text-center font-extrabold text-amber-300">${r.pts}</td>
+          </tr>
+        `;
+      }).join('');
+
+      if (statusEl) {
+        const nowStr = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+        statusEl.textContent = `✓ Fikstür skorlarından otomatik hesaplandı (${nowStr}) • Kazanan +2P, Kaybeden +1P`;
+        statusEl.className = 'text-[11px] text-emerald-400 truncate';
+      }
+    }
+
+    function syncStandingsFromTBF(isManual = false) {
+      applyFixtureOverrides();
+      renderStandings();
+    }
+
+    // ==================== 8. 9 SALON DURUM & BAKIM ====================
+    const defaultArenas = [
+      { id: 's1', code: 'Saha 1', name: 'Sinan Erdem Spor Salonu', city: 'İstanbul', teams: 'Galatasaray MCT Technic / Bahçeşehir Koleji', status: 'Aktif • Hazır', note: 'Sistem sorunsuz çalışmaktadır' },
+      { id: 's2', code: 'Saha 2', name: 'Akatlar Spor Salonu', city: 'İstanbul', teams: 'Esenler Erokspor', status: 'Aktif • Hazır', note: 'Sistem sorunsuz çalışmaktadır' },
+      { id: 's3', code: 'Saha 3', name: 'Ankara Spor Salonu', city: 'Ankara', teams: 'Türk Telekom', status: 'Aktif • Hazır', note: 'Sistem sorunsuz çalışmaktadır' },
+      { id: 's4', code: 'Saha 4', name: 'Hayri Gür Spor Salonu', city: 'Trabzon', teams: 'Trabzonspor', status: 'Aktif • Hazır', note: 'Sistem sorunsuz çalışmaktadır' },
+      { id: 's5', code: 'Saha 5', name: 'Tofaş Spor Salonu', city: 'Bursa', teams: 'Tofaş / Bursaspor Basketbol', status: 'Aktif • Hazır', note: 'Sistem sorunsuz çalışmaktadır' },
+      { id: 's6', code: 'Saha 6', name: 'ENKA Spor Salonu', city: 'İzmir-Aliağa', teams: 'Aliağa Petkim Spor', status: 'Aktif • Hazır', note: 'Sistem sorunsuz çalışmaktadır' },
+      { id: 's7', code: 'Saha 7', name: 'Mustafa Kemal Atatürk Spor Salonu', city: 'İzmir-Karşıyaka', teams: 'Karşıyaka', status: 'Aktif • Hazır', note: 'Sistem sorunsuz çalışmaktadır' },
+      { id: 's8', code: 'Saha 8', name: 'Pamukkale Üniversitesi Spor Salonu', city: 'Denizli', teams: 'Yukatel Denizli Basket', status: 'Aktif • Hazır', note: 'Sistem sorunsuz çalışmaktadır' },
+      { id: 's9', code: 'Saha 9', name: 'Şehit Polis Recep Topaloğlu Spor Salonu', city: 'Kocaeli', teams: 'Biotekno Körfez Basket', status: 'Aktif • Hazır', note: 'Sistem sorunsuz çalışmaktadır' }
+    ];
+
+    const ARENAS_STORAGE_KEY = 'perimeter_desk_9_arenas_v2';
+
+    function loadArenas() {
+      try {
+        const raw = localStorage.getItem(ARENAS_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length === 9) return parsed;
+        }
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(defaultArenas));
+    }
+
+    function saveArenas(list) {
+      try {
+        localStorage.setItem(ARENAS_STORAGE_KEY, JSON.stringify(list));
+      } catch (e) {}
+      if (typeof window.pushSharedCloudState === 'function') {
+        window.pushSharedCloudState();
+      }
+    }
+
+    function getArenaStatusSelectClass(status) {
+      if (status === 'Kontrol/Bakım') {
+        return 'bg-amber-500/20 border border-amber-500/50 rounded-xl px-2 py-1 text-[11px] font-bold text-amber-300 focus:outline-none';
+      }
+      if (status === 'Arıza') {
+        return 'bg-rose-500/20 border border-rose-500/50 rounded-xl px-2 py-1 text-[11px] font-bold text-rose-300 focus:outline-none';
+      }
+      return 'bg-emerald-500/20 border border-emerald-500/50 rounded-xl px-2 py-1 text-[11px] font-bold text-emerald-300 focus:outline-none';
+    }
+
+    function renderArenas() {
+      const container = document.getElementById('arenas-list');
+      if (!container) return;
+      const arenas = loadArenas();
+      container.innerHTML = arenas.map((a, idx) => `
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 space-y-2">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded-md bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-bold">${a.code}</span>
+                <span class="text-[11px] text-slate-400">${a.city}</span>
+              </div>
+              <h3 class="text-xs font-bold text-white mt-1">${a.name}</h3>
+              <p class="text-[11px] text-slate-400">${a.teams}</p>
+            </div>
+            <select onchange="updateArenaStatus(${idx}, this.value)" class="${getArenaStatusSelectClass(a.status)}">
+              <option value="Aktif • Hazır" ${a.status === 'Aktif • Hazır' ? 'selected' : ''} class="bg-slate-950 text-emerald-300">Aktif • Hazır</option>
+              <option value="Kontrol/Bakım" ${a.status === 'Kontrol/Bakım' ? 'selected' : ''} class="bg-slate-950 text-amber-300">Kontrol/Bakım</option>
+              <option value="Arıza" ${a.status === 'Arıza' ? 'selected' : ''} class="bg-slate-950 text-rose-300">Arıza</option>
+            </select>
+          </div>
+          <input type="text" value="${escapeHtml(a.note)}" onchange="updateArenaNote(${idx}, this.value)"
+            placeholder="Saha notu ekleyin..."
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-[11px] text-slate-200 focus:outline-none focus:border-amber-500" />
+        </div>
+      `).join('');
+    }
+
+    function updateArenaStatus(index, newStatus) {
+      const arenas = loadArenas();
+      if (arenas[index]) {
+        arenas[index].status = newStatus;
+        saveArenas(arenas);
+        renderArenas();
+      }
+    }
+
+    function updateArenaNote(index, newNote) {
+      const arenas = loadArenas();
+      if (arenas[index]) {
+        arenas[index].note = newNote;
+        saveArenas(arenas);
+      }
+    }
+
+    function resetArenasToDefault() {
+      saveArenas(defaultArenas);
+      renderArenas();
+    }
+
+    // ==================== 8B. HAFTALIK ÇALIŞMA PROGRAMI ŞABLONU ====================
+    const SCHEDULE_STORAGE_KEY = 'perimeter_desk_weekly_schedule_v2';
+    const SCHEDULE_BANNER_KEY = 'perimeter_desk_schedule_banner_v1';
+    const DEFAULT_SCHEDULE_BANNER = 'HAFTALIK ÇALIŞMA BİLGİLENDİRMESİ';
+
+    function loadScheduleBannerTitle() {
+      try {
+        const saved = localStorage.getItem(SCHEDULE_BANNER_KEY);
+        if (saved === 'İLEEEM İÇİN HAFTALIK ÇALIŞMA BİLGİLENDİRMESİ' || saved === 'HAFTALIK ÇALIŞMA BİLGİLENDİRMESİ') {
+          return saved;
+        }
+      } catch (e) {}
+      return DEFAULT_SCHEDULE_BANNER;
+    }
+
+    function updateScheduleBannerTitle(val) {
+      try {
+        localStorage.setItem(SCHEDULE_BANNER_KEY, val);
+      } catch (e) {}
+      renderScheduleVisualTable(loadWeeklySchedule());
+      if (typeof window.pushSharedCloudState === 'function') {
+        window.pushSharedCloudState();
+      }
+    }
+
+    const defaultWeeklySchedule = [
+      { day: 'Pazartesi', isOff: false, start: '', end: '', note: '' },
+      { day: 'Salı', isOff: false, start: '', end: '', note: '' },
+      { day: 'Çarşamba', isOff: false, start: '', end: '', note: '' },
+      { day: 'Perşembe', isOff: false, start: '', end: '', note: '' },
+      { day: 'Cuma', isOff: false, start: '', end: '', note: '' },
+      { day: 'Cumartesi', isOff: false, start: '', end: '', note: '' },
+      { day: 'Pazar', isOff: false, start: '', end: '', note: '' }
+    ];
+
+    function loadWeeklySchedule() {
+      try {
+        localStorage.removeItem('perimeter_desk_weekly_schedule_v1');
+        const raw = localStorage.getItem(SCHEDULE_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length === 7) return parsed;
+        }
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(defaultWeeklySchedule));
+    }
+
+    function saveWeeklySchedule(list) {
+      try {
+        localStorage.setItem(SCHEDULE_STORAGE_KEY, JSON.stringify(list));
+      } catch (e) {}
+      if (typeof window.pushSharedCloudState === 'function') {
+        window.pushSharedCloudState();
+      }
+    }
+
+    function calcShiftMinutes(startStr, endStr) {
+      if (!startStr || !endStr) return 0;
+      const [sh, sm] = startStr.split(':').map(Number);
+      const [eh, em] = endStr.split(':').map(Number);
+      if ([sh, sm, eh, em].some(Number.isNaN)) return 0;
+      let diff = (eh * 60 + em) - (sh * 60 + sm);
+      if (diff < 0) diff += 24 * 60;
+      return diff;
+    }
+
+    function formatMinutesLabel(mins) {
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return m > 0 ? `${h}s ${String(m).padStart(2, '0')}dk` : `${h}s 00dk`;
+    }
+
+    function toTrUpper(str) {
+      return String(str || '').toLocaleUpperCase('tr-TR');
+    }
+
+    function renderScheduleVisualTable(list) {
+      const tableWrap = document.getElementById('schedule-visual-table');
+      if (!tableWrap) return;
+
+      const bannerTitle = loadScheduleBannerTitle();
+      const bannerInput = document.getElementById('sched-banner-input');
+      if (bannerInput && bannerInput.value !== bannerTitle) {
+        bannerInput.value = bannerTitle;
+      }
+
+      const hasAnyNote = list.some(item => !item.isOff && (item.note || '').trim() !== '');
+
+      const headerCells = list.map(item => `
+        <th class="border-2 border-black bg-[#d4d4d4] text-black font-extrabold text-center py-3 px-2 text-xs sm:text-sm tracking-wide uppercase">
+          ${escapeHtml(toTrUpper(item.day))}
+        </th>
+      `).join('');
+
+      const timeCells = list.map(item => {
+        if (item.isOff) {
+          return `
+            <td class="border-2 border-black bg-[#f7dc5c] text-black font-extrabold text-center py-3.5 px-2 text-sm sm:text-base tracking-wide">
+              İZİN
+            </td>
+          `;
+        }
+        return `
+          <td class="border-2 border-black bg-white text-black font-extrabold text-center py-3.5 px-2 text-sm sm:text-base tracking-wide">
+            ${escapeHtml(item.start || '--:--')}
+          </td>
+        `;
+      }).join('');
+
+      const noteCells = hasAnyNote ? `
+        <tr>
+          <td class="bg-white"></td>
+          ${list.map(item => {
+            const noteVal = !item.isOff ? (item.note || '').trim() : '';
+            if (!noteVal) {
+              return `<td class="bg-white"></td>`;
+            }
+            return `
+              <td class="border-2 border-black bg-[#e31e33] text-white font-extrabold text-center py-3 px-2 text-xs sm:text-[13px] leading-snug tracking-wide uppercase">
+                ${escapeHtml(toTrUpper(noteVal))}
+              </td>
+            `;
+          }).join('')}
+        </tr>
+      ` : '';
+
+      const bannerHtml = bannerTitle.trim() ? `
+        <div class="w-full border-2 border-black bg-[#e31e33] text-white font-extrabold text-center py-3.5 px-4 text-lg sm:text-2xl tracking-wider uppercase mb-4" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
+          ${escapeHtml(toTrUpper(bannerTitle.trim()))}
+        </div>
+      ` : '';
+
+      tableWrap.innerHTML = `
+        <div class="bg-white" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
+          ${bannerHtml}
+          <table class="w-full border-collapse table-fixed">
+            <thead>
+              <tr>
+                <th class="w-[12%] border-2 border-black bg-[#d4d4d4] text-black font-extrabold text-center py-3 px-2 text-sm sm:text-base tracking-wide">
+                  GÜN
+                </th>
+                ${headerCells}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border-2 border-black bg-[#d4d4d4] text-black font-extrabold text-center py-3.5 px-2 text-sm sm:text-base tracking-wide">
+                  SAAT
+                </td>
+                ${timeCells}
+              </tr>
+              ${noteCells}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function downloadScheduleTablePng() {
+      const list = loadWeeklySchedule();
+      const bannerTitle = toTrUpper(loadScheduleBannerTitle().trim());
+      const canvas = document.createElement('canvas');
+      const scale = 3;
+      const colWidths = [165, 195, 195, 195, 195, 195, 195, 195];
+      const rowHeights = [72, 74, 72];
+      const padX = 56;
+      const padY = 56;
+      const bannerH = bannerTitle ? 86 : 0;
+      const bannerGap = bannerTitle ? 32 : 0;
+      const tableW = colWidths.reduce((a, b) => a + b, 0);
+      const totalW = tableW + padX * 2;
+      const hasNotes = list.some(x => !x.isOff && (x.note || '').trim() !== '');
+      const totalH = bannerH + bannerGap + rowHeights[0] + rowHeights[1] + (hasNotes ? rowHeights[2] : 0) + padY * 2;
+
+      canvas.width = totalW * scale;
+      canvas.height = totalH * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(scale, scale);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      const drawCell = (x, y, w, h, bg, text, textColor, fontSpec) => {
+        ctx.fillStyle = bg;
+        ctx.fillRect(x, y, w, h);
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(x, y, w, h);
+        if (text) {
+          ctx.fillStyle = textColor;
+          ctx.font = fontSpec;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(text, x + w / 2, y + h / 2 + 1, w - 20);
+        }
+      };
+
+      let startY = padY;
+      if (bannerTitle) {
+        drawCell(padX, startY, tableW, bannerH, '#e31e33', bannerTitle, '#ffffff', '800 34px "Inter", Arial, sans-serif');
+        startY += bannerH + bannerGap;
+      }
+
+      let curX = padX;
+      const r0Y = startY;
+      drawCell(curX, r0Y, colWidths[0], rowHeights[0], '#d4d4d4', 'GÜN', '#000000', '800 24px "Inter", Arial, sans-serif');
+      curX += colWidths[0];
+
+      list.forEach((item, i) => {
+        drawCell(curX, r0Y, colWidths[i + 1], rowHeights[0], '#d4d4d4', toTrUpper(item.day), '#000000', '800 21px "Inter", Arial, sans-serif');
+        curX += colWidths[i + 1];
+      });
+
+      curX = padX;
+      const r1Y = startY + rowHeights[0];
+      drawCell(curX, r1Y, colWidths[0], rowHeights[1], '#d4d4d4', 'SAAT', '#000000', '800 24px "Inter", Arial, sans-serif');
+      curX += colWidths[0];
+
+      list.forEach((item, i) => {
+        if (item.isOff) {
+          drawCell(curX, r1Y, colWidths[i + 1], rowHeights[1], '#f7dc5c', 'İZİN', '#000000', '800 22px "Inter", Arial, sans-serif');
+        } else {
+          drawCell(curX, r1Y, colWidths[i + 1], rowHeights[1], '#ffffff', item.start || '--:--', '#000000', '800 24px "Inter", Arial, sans-serif');
+        }
+        curX += colWidths[i + 1];
+      });
+
+      if (hasNotes) {
+        curX = padX + colWidths[0];
+        const r2Y = startY + rowHeights[0] + rowHeights[1];
+        list.forEach((item, i) => {
+          const noteVal = !item.isOff ? (item.note || '').trim() : '';
+          if (noteVal) {
+            drawCell(curX, r2Y, colWidths[i + 1], rowHeights[2], '#e31e33', toTrUpper(noteVal), '#ffffff', '800 18px "Inter", Arial, sans-serif');
+          }
+          curX += colWidths[i + 1];
+        });
+      }
+
+      const fileName = 'HAFTALIK_CALISMA_BILGILENDIRMESI.png';
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
+        try {
+          const file = new File([blob], fileName, { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: 'Haftalık Çalışma Bilgilendirmesi'
+            });
+            return;
+          }
+        } catch (err) {
+          if (err && err.name === 'AbortError') return;
+        }
+
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = fileName;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(blobUrl);
+        }, 2500);
+      }, 'image/png');
+    }
+
+    function renderWeeklySchedule() {
+      const container = document.getElementById('schedule-days-list');
+      if (!container) return;
+      const list = loadWeeklySchedule();
+
+      renderScheduleVisualTable(list);
+
+      let workDays = 0;
+      let offDays = 0;
+      let totalMins = 0;
+
+      list.forEach(item => {
+        if (item.isOff) {
+          offDays++;
+        } else {
+          workDays++;
+          totalMins += calcShiftMinutes(item.start, item.end);
+        }
+      });
+
+      const workEl = document.getElementById('sched-work-days');
+      const offEl = document.getElementById('sched-off-days');
+      const hoursEl = document.getElementById('sched-total-hours');
+      if (workEl) workEl.textContent = `${workDays} Gün`;
+      if (offEl) offEl.textContent = `${offDays} Gün`;
+      if (hoursEl) hoursEl.textContent = formatMinutesLabel(totalMins);
+
+      container.innerHTML = list.map((item, idx) => {
+        const dayMins = item.isOff ? 0 : calcShiftMinutes(item.start, item.end);
+        const isSinanErdem = !item.isOff && (item.note || '').trim().toLocaleUpperCase('tr-TR') === 'SİNAN ERDEM';
+        return `
+          <div class="bg-slate-900 border ${item.isOff ? 'border-amber-500/35 bg-slate-900/70' : 'border-slate-800'} rounded-2xl p-3 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-extrabold text-white">${item.day}</span>
+                ${item.isOff
+                  ? '<span class="px-2 py-0.5 rounded-md bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-bold">🌴 İZİN GÜNÜ</span>'
+                  : `<span class="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold">💼 ÇALIŞMA • ${formatMinutesLabel(dayMins)}</span>`
+                }
+              </div>
+              <button type="button" onclick="toggleScheduleOffDay(${idx})"
+                class="px-2.5 py-1 rounded-xl text-[11px] font-bold transition active:scale-95 ${
+                  item.isOff
+                    ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                    : 'bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300'
+                }">
+                ${item.isOff ? 'Çalışma Yap' : 'İzin İşaretle'}
+              </button>
+            </div>
+
+            ${item.isOff ? '' : `
+              <div class="space-y-2">
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2">
+                    <label class="text-[10px] font-semibold text-slate-400">Başlangıç</label>
+                    <input type="text" inputmode="numeric" maxlength="5" placeholder="08:30"
+                      value="${escapeHtml(item.start)}"
+                      onfocus="this.select()"
+                      onblur="commitSmartTime(${idx}, 'start', this)"
+                      onkeydown="if(event.key==='Enter'){this.blur();}"
+                      class="w-16 text-right bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-1 text-xs font-mono font-extrabold text-emerald-300 focus:outline-none focus:border-emerald-400" />
+                  </div>
+                  <div class="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2">
+                    <label class="text-[10px] font-semibold text-slate-400">Bitiş</label>
+                    <input type="text" inputmode="numeric" maxlength="5" placeholder="17:30"
+                      value="${escapeHtml(item.end)}"
+                      onfocus="this.select()"
+                      onblur="commitSmartTime(${idx}, 'end', this)"
+                      onkeydown="if(event.key==='Enter'){this.blur();}"
+                      class="w-16 text-right bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-1 text-xs font-mono font-extrabold text-sky-300 focus:outline-none focus:border-sky-400" />
+                  </div>
+                </div>
+                <div class="flex items-center justify-between gap-1 flex-wrap">
+                  <div class="flex items-center gap-1 flex-wrap">
+                    <button type="button" onclick="applyShiftPreset(${idx}, '08:30', '17:30')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-200 active:scale-95">08:30-17:30</button>
+                    <button type="button" onclick="applyShiftPreset(${idx}, '12:00', '21:00')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-200 active:scale-95">12:00-21:00</button>
+                    <button type="button" onclick="applyShiftPreset(${idx}, '13:00', '22:00')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-200 active:scale-95">13:00-22:00</button>
+                    <button type="button" onclick="applyShiftPreset(${idx}, '14:00', '23:00')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-200 active:scale-95">14:00-23:00</button>
+                  </div>
+                  <button type="button" onclick="copyShiftToAllWorkdays(${idx})" title="Bu saati diğer çalışma günlerine kopyala" class="px-2 py-1 rounded-lg bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/40 text-[10px] font-bold text-sky-300 active:scale-95">
+                    Tümüne Kopyala
+                  </button>
+                </div>
+
+                <label class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl border cursor-pointer transition select-none ${
+                  isSinanErdem
+                    ? 'bg-rose-600/20 border-rose-500 text-rose-200'
+                    : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
+                }">
+                  <span class="flex items-center gap-2 text-xs font-extrabold tracking-wide">
+                    <input type="checkbox" ${isSinanErdem ? 'checked' : ''}
+                      onchange="toggleSinanErdem(${idx}, this.checked)"
+                      class="w-4 h-4 rounded accent-rose-600 cursor-pointer" />
+                    <span>SİNAN ERDEM</span>
+                  </span>
+                  <span class="text-[10px] font-bold ${isSinanErdem ? 'text-rose-300' : 'text-slate-500'}">
+                    ${isSinanErdem ? 'Tabloda Görünür' : 'Seçili Değil'}
+                  </span>
+                </label>
+              </div>
+            `}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleSinanErdem(index, checked) {
+      const list = loadWeeklySchedule();
+      if (!list[index]) return;
+      list[index].note = checked ? 'SİNAN ERDEM' : '';
+      saveWeeklySchedule(list);
+      renderWeeklySchedule();
+    }
+
+    function toggleScheduleOffDay(index) {
+      const list = loadWeeklySchedule();
+      if (!list[index]) return;
+      list[index].isOff = !list[index].isOff;
+      saveWeeklySchedule(list);
+      renderWeeklySchedule();
+    }
+
+    function updateScheduleField(index, field, value) {
+      const list = loadWeeklySchedule();
+      if (!list[index]) return;
+      list[index][field] = value;
+      saveWeeklySchedule(list);
+      renderWeeklySchedule();
+    }
+
+    function normalizeSmartTimeInput(raw) {
+      const cleaned = String(raw || '').trim();
+      if (!cleaned) return null;
+      const digits = cleaned.replace(/\D/g, '');
+      let h = 0;
+      let m = 0;
+      if (cleaned.includes(':')) {
+        const [hp, mp] = cleaned.split(':');
+        h = parseInt(hp, 10);
+        m = parseInt(mp || '0', 10);
+      } else if (digits.length === 1 || digits.length === 2) {
+        h = parseInt(digits, 10);
+        m = 0;
+      } else if (digits.length === 3) {
+        h = parseInt(digits.slice(0, 1), 10);
+        m = parseInt(digits.slice(1, 3), 10);
+      } else if (digits.length >= 4) {
+        h = parseInt(digits.slice(0, 2), 10);
+        m = parseInt(digits.slice(2, 4), 10);
+      } else {
+        return null;
+      }
+      if (Number.isNaN(h) || Number.isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59) return null;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
+    function commitSmartTime(index, field, inputEl) {
+      const list = loadWeeklySchedule();
+      if (!list[index]) return;
+      const formatted = normalizeSmartTimeInput(inputEl.value);
+      if (formatted) {
+        list[index][field] = formatted;
+        saveWeeklySchedule(list);
+      }
+      renderWeeklySchedule();
+    }
+
+    function applyShiftPreset(index, startVal, endVal) {
+      const list = loadWeeklySchedule();
+      if (!list[index]) return;
+      list[index].isOff = false;
+      list[index].start = startVal;
+      list[index].end = endVal;
+      saveWeeklySchedule(list);
+      renderWeeklySchedule();
+    }
+
+    function copyShiftToAllWorkdays(sourceIndex) {
+      const list = loadWeeklySchedule();
+      const src = list[sourceIndex];
+      if (!src) return;
+      list.forEach((dayItem, idx) => {
+        if (!dayItem.isOff && idx !== sourceIndex) {
+          dayItem.start = src.start;
+          dayItem.end = src.end;
+        }
+      });
+      saveWeeklySchedule(list);
+      renderWeeklySchedule();
+    }
+
+    function resetScheduleToDefault() {
+      const emptySchedule = defaultWeeklySchedule.map(d => ({
+        day: d.day,
+        isOff: false,
+        start: '',
+        end: '',
+        note: ''
+      }));
+      saveWeeklySchedule(emptySchedule);
+      updateScheduleBannerTitle(DEFAULT_SCHEDULE_BANNER);
+      renderWeeklySchedule();
+    }
+
+    // ==================== 9. SEKME GEÇİŞLERİ & BAŞLATMA ====================
+    function switchTab(tabKey) {
+      const tabs = ['plan', 'troubleshoot', 'tb60', 'fixtures', 'standings', 'arenas', 'schedule'];
+      tabs.forEach(t => {
+        const sec = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`nav-${t}`);
+        if (sec) sec.classList.toggle('hidden', t !== tabKey);
+        if (btn) {
+          if (t === tabKey) {
+            btn.className = 'nav-btn flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-1 rounded-xl bg-amber-500/15 text-amber-400 font-bold text-[9.5px] sm:text-xs';
+          } else {
+            btn.className = 'nav-btn flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-200 font-medium text-[9.5px] sm:text-xs';
+          }
+        }
+      });
+      if (tabKey === 'standings') {
+        renderStandings();
+      } else if (tabKey === 'schedule') {
+        renderWeeklySchedule();
+      }
+    }
+
+    function openPwaModal() {
+      const m = document.getElementById('pwa-modal');
+      if (m) m.classList.remove('hidden');
+    }
+
+    function closePwaModal() {
+      const m = document.getElementById('pwa-modal');
+      if (m) m.classList.add('hidden');
+    }
+
+    window.switchTab = switchTab;
+    window.toggleWiringLines = toggleWiringLines;
+    window.selectZone = selectZone;
+    window.selectPanel = selectPanel;
+    window.viewWholeActiveZone = viewWholeActiveZone;
+    window.selectLed = selectLed;
+    window.syncFixturesFromTBF = syncFixturesFromTBF;
+    window.toggleTbfLiveEmbed = toggleTbfLiveEmbed;
+    window.openLeagueSettingsModal = openLeagueSettingsModal;
+    window.closeLeagueSettingsModal = closeLeagueSettingsModal;
+    window.saveLeagueSettings = saveLeagueSettings;
+    window.resetLeagueSettingsToDefault = resetLeagueSettingsToDefault;
+    window.applyQuickDateFromPicker = applyQuickDateFromPicker;
+    window.setQuickMatchTime = setQuickMatchTime;
+    window.formatQuickMatchTimeInput = formatQuickMatchTimeInput;
+    window.openQuickScoreModal = openQuickScoreModal;
+    window.closeQuickScoreModal = closeQuickScoreModal;
+    window.saveQuickScore = saveQuickScore;
+    window.clearQuickScore = clearQuickScore;
+    window.handleFixtureWeekChange = handleFixtureWeekChange;
+    window.toggleOnly7253 = toggleOnly7253;
+    window.renderFixtures = renderFixtures;
+    window.syncStandingsFromTBF = syncStandingsFromTBF;
+    window.renderStandings = renderStandings;
+    window.updateArenaStatus = updateArenaStatus;
+    window.updateArenaNote = updateArenaNote;
+    window.resetArenasToDefault = resetArenasToDefault;
+    window.toggleScheduleOffDay = toggleScheduleOffDay;
+    window.toggleSinanErdem = toggleSinanErdem;
+    window.updateScheduleField = updateScheduleField;
+    window.commitSmartTime = commitSmartTime;
+    window.applyShiftPreset = applyShiftPreset;
+    window.copyShiftToAllWorkdays = copyShiftToAllWorkdays;
+    window.updateScheduleBannerTitle = updateScheduleBannerTitle;
+    window.resetScheduleToDefault = resetScheduleToDefault;
+    window.downloadScheduleTablePng = downloadScheduleTablePng;
+    window.openPwaModal = openPwaModal;
+    window.closePwaModal = closePwaModal;
+
+    function removeNetlifyBranding() {
+      document.querySelectorAll('a[href*="netlify.com"], a[href*="netlify.app"], [id*="netlify"], [class*="netlify"]').forEach(el => {
+        el.remove();
+      });
+      document.querySelectorAll('div, span, footer, p, a').forEach(el => {
+        if (el.children.length === 0 && /powered\s+by\s+netlify/i.test(el.textContent || '')) {
+          const wrapper = el.closest('a, div, footer') || el;
+          wrapper.remove();
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      removeNetlifyBranding();
+      const brandObserver = new MutationObserver(() => removeNetlifyBranding());
+      brandObserver.observe(document.body, { childList: true, subtree: true });
+
+      renderCourtPanels();
+      selectPanel('z3', 1);
+      renderScenarios();
+      applyLeagueAndTeamsSettings();
+      applyFixtureOverrides();
+      initFixtureWeeks();
+      renderFixtures();
+      renderStandings();
+      renderArenas();
+      renderWeeklySchedule();
+    });
+  </script>
+
+  <!-- DOĞRUDAN UYGULAMA İÇİ ORTAK BULUT SENKRONİZASYONU -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const badgeDot = document.getElementById('cloud-sync-dot');
+    const badgeText = document.getElementById('cloud-sync-text');
+
+    function setCloudBadge(status, label) {
+      if (!badgeDot || !badgeText) return;
+      badgeText.textContent = label;
+      if (status === 'connected') {
+        badgeDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400';
+      } else if (status === 'saving') {
+        badgeDot.className = 'w-1.5 h-1.5 rounded-full bg-sky-400 animate-ping';
+      } else {
+        badgeDot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400';
+      }
+    }
+
+    let db = null;
+    let currentUser = null;
+    let sharedDocRef = null;
+    let isApplyingRemoteUpdate = false;
+    let saveDebounceTimer = null;
+    let activeCloudProvider = 'none';
+    let lastKnownUpdatedAt = 0;
+    let netlifyPollInterval = null;
+
+    const DEFAULT_NETLIFY_CLOUD_URL = 'https://perimeter-desk.netlify.app';
+    const CLOUD_API_BASE = (window.location.protocol === 'file:')
+      ? (window.PERIMETER_NETLIFY_URL || DEFAULT_NETLIFY_CLOUD_URL).replace(/\/$/, '')
+      : '';
+
+    function buildCurrentStatePayload() {
+      return {
+        leagueSettingsJson: localStorage.getItem('tbf_7253_league_settings_v1') || '{}',
+        fixtureOverridesJson: localStorage.getItem('tbf_7253_fixture_overrides_v11') || '{}',
+        arenasJson: localStorage.getItem('perimeter_desk_9_arenas_v2') || '[]',
+        scheduleJson: localStorage.getItem('perimeter_desk_weekly_schedule_v2') || '[]',
+        scheduleBanner: localStorage.getItem('perimeter_desk_schedule_banner_v1') || 'HAFTALIK ÇALIŞMA BİLGİLENDİRMESİ',
+        updatedAt: Date.now()
+      };
+    }
+
+    function applySharedStateToLocal(data) {
+      if (!data || typeof data !== 'object') return;
+      if (data.updatedAt && data.updatedAt <= lastKnownUpdatedAt) return;
+      if (data.updatedAt) lastKnownUpdatedAt = data.updatedAt;
+
+      isApplyingRemoteUpdate = true;
+      try {
+        if (data.leagueSettingsJson) {
+          localStorage.setItem('tbf_7253_league_settings_v1', data.leagueSettingsJson);
+          if (typeof applyLeagueAndTeamsSettings === 'function') applyLeagueAndTeamsSettings();
+          if (typeof initFixtureWeeks === 'function') initFixtureWeeks();
+        }
+        if (data.fixtureOverridesJson) {
+          localStorage.setItem('tbf_7253_fixture_overrides_v11', data.fixtureOverridesJson);
+          if (typeof applyFixtureOverrides === 'function') applyFixtureOverrides();
+          if (typeof renderFixtures === 'function') renderFixtures();
+          if (typeof renderStandings === 'function') renderStandings();
+        }
+        if (data.arenasJson) {
+          localStorage.setItem('perimeter_desk_9_arenas_v2', data.arenasJson);
+          if (typeof renderArenas === 'function') renderArenas();
+        }
+        if (data.scheduleJson) {
+          localStorage.setItem('perimeter_desk_weekly_schedule_v2', data.scheduleJson);
+        }
+        if (typeof data.scheduleBanner === 'string') {
+          localStorage.setItem('perimeter_desk_schedule_banner_v1', data.scheduleBanner);
+        }
+        if (data.scheduleJson || typeof data.scheduleBanner === 'string') {
+          if (typeof renderWeeklySchedule === 'function') renderWeeklySchedule();
+        }
+      } finally {
+        isApplyingRemoteUpdate = false;
+      }
+    }
+
+    async function fetchNetlifySharedState() {
+      try {
+        const res = await fetch(`${CLOUD_API_BASE}/.netlify/functions/shared-state?_t=${Date.now()}`, {
+          method: 'GET',
+          cache: 'no-store'
+        });
+        if (!res.ok) return false;
+        const json = await res.json();
+        if (!json || !json.ok) return false;
+
+        activeCloudProvider = 'netlify';
+        setCloudBadge('connected', 'Ortak Bulut');
+
+        if (!json.data) {
+          window.pushSharedCloudState();
+        } else {
+          applySharedStateToLocal(json.data);
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function initNetlifyCloudSync() {
+      const ok = await fetchNetlifySharedState();
+      if (!ok) {
+        setCloudBadge('offline', 'Yerel Mod');
+        return;
+      }
+      if (netlifyPollInterval) clearInterval(netlifyPollInterval);
+      netlifyPollInterval = setInterval(() => {
+        if (document.visibilityState === 'visible' && !saveDebounceTimer) {
+          fetchNetlifySharedState();
+        }
+      }, 4000);
+      window.addEventListener('focus', () => {
+        if (!saveDebounceTimer) fetchNetlifySharedState();
+      });
+    }
+
+    async function initSharedCloudSync() {
+      try {
+        if (typeof __firebase_config === 'undefined' || !__firebase_config) {
+          await initNetlifyCloudSync();
+          return;
+        }
+
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        db = getFirestore(app);
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          const cred = await signInWithCustomToken(auth, __initial_auth_token);
+          currentUser = cred.user;
+        } else {
+          const cred = await signInAnonymously(auth);
+          currentUser = cred.user;
+        }
+
+        if (!currentUser) {
+          await initNetlifyCloudSync();
+          return;
+        }
+
+        activeCloudProvider = 'firebase';
+        sharedDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'perimeter_shared_state', 'live_v1');
+
+        onSnapshot(
+          sharedDocRef,
+          (snap) => {
+            setCloudBadge('connected', 'Ortak Bulut');
+            if (!snap.exists()) {
+              window.pushSharedCloudState();
+              return;
+            }
+            applySharedStateToLocal(snap.data() || {});
+          },
+          async () => {
+            await initNetlifyCloudSync();
+          }
+        );
+      } catch (e) {
+        await initNetlifyCloudSync();
+      }
+    }
+
+    window.pushSharedCloudState = function () {
+      if (isApplyingRemoteUpdate || activeCloudProvider === 'none') return;
+      clearTimeout(saveDebounceTimer);
+      setCloudBadge('saving', 'Kaydediliyor...');
+      saveDebounceTimer = setTimeout(async () => {
+        saveDebounceTimer = null;
+        const payload = buildCurrentStatePayload();
+        lastKnownUpdatedAt = payload.updatedAt;
+
+        try {
+          if (activeCloudProvider === 'firebase' && db && currentUser && sharedDocRef) {
+            await setDoc(sharedDocRef, payload, { merge: true });
+            setCloudBadge('connected', 'Ortak Bulut');
+          } else if (activeCloudProvider === 'netlify') {
+            const res = await fetch(`${CLOUD_API_BASE}/.netlify/functions/shared-state`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (!res.ok) throw new Error('Netlify save failed');
+            setCloudBadge('connected', 'Ortak Bulut');
+          }
+        } catch (e) {
+          setCloudBadge('offline', 'Yerel Mod');
+        }
+      }, 350);
+    };
+
+    initSharedCloudSync();
+  </script>
+</body>
+</html>
